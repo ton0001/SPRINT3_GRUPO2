@@ -1,0 +1,2076 @@
+openapi: 3.0.0
+info:
+  title: Mi ecommerce
+  version: 1.0.0
+  description: |-
+    Esta es la API de Mi ecommerce.
+    
+    Links:
+    - [Repositorio de Github](https://github.com/ton0001/grupo2sprint1)
+  
+servers:
+  - url: http://localhost:8080/api/v2
+    description: Entorno Desarrollo
+    
+tags:
+  - name: login
+    description: Todos los endpoints de login
+  - name: usuarios
+    description: Todos los endpoints de usuarios
+  - name: productos
+    description: Todos los endpoints de productos
+  - name: imagenes
+    description: Todos los endpoints de las imagenes
+  - name: carritos
+    description: Todos los endpoints de los carritos
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  
+paths:
+  /login:
+    post:
+      tags: 
+        - login
+      summary: Recibe las credenciales de un user y las valida para generar un Token para dar autorización a las rutas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                  username:
+                    type: string
+                    example: juanperez
+                  password: 
+                    type: string
+                    example: '123456'
+      responses:
+        '200':    # status code
+          description: Authorized
+          content:
+            application/json:
+              schema:  
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                    message:
+                      type: string
+                      example: "Authorized Login Success"
+                    user:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          example: 10
+                        username:
+                          type: string
+                          example: juanperez
+                    token:
+                      type: string
+                      example: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjMsImlhdCI6MTY2NDIxMDA2OSwiZXhwIjoxNjY0MjEzNjY5fQ.m1D2EbS4Isjl0siOWnLt5DLHj-EquF16ybjuKwbeLzigs14XDT7gVs4yxg7A-czCNefNpzYJSFu6NFiIAy73FQ
+        '400':    # status code
+          description: User NOT found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Wrong password or username
+        '500':    # status code
+          description: Error login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string 
+                    example: Error de servidor
+                    
+
+  /users/login:
+   post:
+      tags: 
+        - usuarios
+      summary: Recibe las credenciales de un user y las valida para generar un Token para dar autorización a las rutas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                  username:
+                    type: string
+                    example: juanperez
+                  password: 
+                    type: string
+                    example: '123456'
+      responses:
+        '200':    # status code
+          description: Authorized
+          content:
+            application/json:
+              schema:  
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                    message:
+                      type: string
+                      example: "Authorized Login Success"
+                    user:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          example: 10
+                        username:
+                          type: string
+                          example: juanperez
+                    token:
+                      type: string
+                      example: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjMsImlhdCI6MTY2NDIxMDA2OSwiZXhwIjoxNjY0MjEzNjY5fQ.m1D2EbS4Isjl0siOWnLt5DLHj-EquF16ybjuKwbeLzigs14XDT7gVs4yxg7A-czCNefNpzYJSFu6NFiIAy73FQ
+        '400':    # status code
+          description: User NOT found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Wrong password or username
+        '500':    # status code
+          description: Error login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string 
+                    example: Error de servidor
+   
+  /users:
+    get:
+      tags: 
+        - usuarios
+      summary: Retorna listado de usuario.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':    # status code
+          description: Un array de usuarios
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      example: 10
+                    email:
+                      type: string
+                      example: juan@gmail.com
+                    username:
+                      type: string
+                      example: juanperez
+                    first_name:
+                      type: string
+                      example: Juan
+                    last_name:
+                      type: string
+                      example: Perez
+                    profilepic:
+                      type: string
+                      example: wwww.mipic.com
+                    role:
+                      type: string 
+                      example: GUEST
+                    cart: 
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          product:
+                            type: number
+                            example: 1
+                          quantity:
+                            type: number  
+                            example: 2
+                            
+        '500':    # status code
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                      type: string
+                      example: Error del servidor
+        '401':
+          description: Usuario NO autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                      type: string
+                      example: Token invalido
+        
+    post:
+      tags: 
+        - usuarios
+      summary: Crear un usuario. Debe recibir un body con la info del usuario a crear.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                  email:
+                    type: string
+                    example: juan@gmail.com
+                  username:
+                    type: string
+                    example: juanperez
+                  password: 
+                    type: string
+                    example: '123456'
+                  first_name:
+                    type: string
+                    example: juan
+                  last_name:
+                    type: string
+                    example: perez
+                  profilepic:
+                    type: string
+                    example: www.pic.com
+                  role:
+                    type: string
+                    default: GUEST
+      responses: 
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    example: juan@gmail.com
+                  username:
+                    type: string
+                    example: juanperez
+                  first_name:
+                    type: string
+                    example: juan
+                  last_name:
+                    type: string
+                    example: perez
+                  profilepic:
+                    type: string
+                    example: www.pic.com
+                  role:
+                    type: string
+                    default: GUEST
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Faltan datos para crear el usuario o algunos campos ya se encuentran utilizados
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Error del servidor al crear el ususario
+
+  /users/{id}:
+    get:
+      tags: 
+        - usuarios
+      summary: Recupera el user con el id solicitado.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Filtrar usuario por id.
+          required: true
+          explode: true
+          schema:
+            type: number
+      responses:
+        '200':    # status code
+          description: Responde con la información completa del usuario con el id buscado.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  id:
+                    type: number
+                    example: 2
+                  email:
+                    type: string
+                    example: juan@gmail.com
+                  username:
+                    type: string
+                    example: juanperez
+                  first_name:
+                    type: string
+                    example: juan
+                  last_name:
+                    type: string
+                    example: perez
+                  profilepic:
+                    type: string
+                    example: www.pic.com
+                  role:
+                    type: string
+                    default: GUEST
+                    
+        '404':
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Usuario no encontrado
+        '403':
+          description: Usuario no autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Usuario no autorizado
+
+        '401':
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Token invalido
+                    
+        '500':
+          description: Error al obtener el usuario
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Error del servidor
+    
+    put:
+      tags: 
+        - usuarios
+      summary: Actualiza el usuario identificado con id. Debe recibir en el body la info del usuario a modificar.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Filtrar usuario por id.
+          required: true
+          explode: true
+          schema:
+            type: number
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                  email:
+                    type: string
+                    example: juan@gmail.com
+                  username:
+                    type: string
+                    example: juanperez
+                  first_name:
+                    type: string
+                    example: juan
+                  last_name:
+                    type: string
+                    example: perez
+                  profilepic:
+                    type: string
+                    example: www.pic.com
+                  role:
+                    type: string
+                    default: GUEST
+      responses:
+        '200':    # status code
+          description: Responde con la info completa del usuario modificado.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  id:
+                    type: number
+                    example: 2
+                  email:
+                    type: string
+                    example: juan@gmail.com
+                  username:
+                    type: string
+                    example: juanperez
+                  first_name:
+                    type: string
+                    example: juan
+                  last_name:
+                    type: string
+                    example: perez
+                  profilepic:
+                    type: string
+                    example: www.pic.com
+                  role:
+                    type: string
+                    default: GUEST
+        '404':
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Usuarion no encontrado
+        '401':
+          description: Usuario no autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Token invalido
+                    
+        '500':
+          description: Error al obtener el usuario
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Error del servidor al obtener el usuario
+   
+    delete:
+      tags: 
+        - usuarios
+      summary: Elimina un usuario con id.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: Eliminar el user identificado con id. 
+          required: true
+          explode: true
+          schema:
+            type: number
+      responses: 
+        '200':
+          description: Usuario eliminado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: true
+                  message:
+                    type: string
+                    example: Usuario eliminado correctamente
+        
+        '404':
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Usuario no encontrado
+                    
+        '401':
+          description: Usuario no autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Token invalido
+        '500':
+          description: Error al eliminar el usuario
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Error del servidor al eliminar el usuario
+                    
+  /users/{id}/cart:
+    get:
+      tags: 
+        - usuarios
+      summary: Recupera el carrito del usuario identificado con id.
+      security:
+        - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: Id del usuario a buscar. 
+        required: true
+        explode: true
+        schema:
+          type: number
+      responses:
+        '200':    # status code
+          description: Responde con un array conteniendo los productos del usuario solicitado.
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  type: object
+                  properties:
+                    product_id:
+                      type: number
+                      example: 64
+                    quantity:
+                      type: number
+                      example: 2
+        '404':    # status code
+          description: Usuario no encontrado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Usuario no encontrado
+        '401':    # status code
+          description: Usuario no autorizado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Token invalido
+                    
+        '500':    # status code
+          description: Error al obtener el carrito.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Error del servidor
+    put:
+      tags:
+        - usuarios
+      summary: Actualiza el carrit del usuario identificado con id solicitado.
+      security:
+        - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: Id de la usuario a buscar. 
+        required: true
+        explode: true
+        schema:
+          type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema: 
+                type: array
+                items:
+                  type: object
+                  properties:
+                    product_id:
+                      type: number
+                      example: 64
+                    quantity:
+                      type: number
+                      example: 2
+      responses:
+        '200':    # status code
+          description: Responde con la info completa del carrito modificado.
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  type: object
+                  properties:
+                    product:
+                      type: number
+                      example: 64
+                    quantity:
+                      type: number
+                      example: 2
+        '404':    # status code
+          description: Usuario no encontrado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Usuario no encontrado
+                    
+        '401':    # status code
+          description: Usuario no autorizado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Token no valido
+        '500':    # status code
+          description: Error al obtener el carrito.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string               
+                    example: Error del servidor
+   
+    
+  /products:
+    get:
+      tags: 
+        - productos
+      summary: Retorna un listado de todos los productos. Permite filtrar por categoria
+      security:
+        - bearerAuth: []
+      parameters: 
+        - in : query
+          name: category
+          schema:
+            type: string
+          required: false
+          description: Permite filtrar por categoria
+          
+          
+      responses:
+        '200':    # status code
+          description: Un array de todos los productos.
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      example: 23
+                    title:
+                      type: string
+                      example: Milanesa
+                    price:
+                      type: number
+                      example: 100
+                    description:
+                      type: string
+                      example: Milanesa de carne de vaca
+                    gallery:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          picture_id:
+                            type: number
+                            example: 2
+                          picture_url:
+                            type: string
+                            example: www.pic.com/img.jpg
+                    category:
+                      type: number
+                      example: 2
+                    mostwanted:
+                      type: boolean
+                      example: true
+                    stock:
+                      type: number
+                      example: 12
+        '404':    # status code
+          description: Productos no encontrados
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string 
+                    example: Productos no encontrados
+        '401':
+          description: NO autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: string
+                    default: false
+                  message:
+                    type: string
+                    example: Token Invalido
+        '500':    # status code
+          description: Error del servidor al cargar los productos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: 
+                    type: boolean
+                    default:
+                  message:
+                    type: string
+                    example: Error del servidor
+    post:
+      tags: 
+        - productos
+      summary: Crea un nuevo producto. Debe recibir un body con la info del producto a crear
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                  title:
+                    type: string
+                    example: Galletas
+                  price:
+                    type: number
+                    example: 50
+                  description:
+                    type: string
+                    example: Galletas de chocolate
+                  gallery:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        picture_id:
+                          type: number
+                          example: 6
+                        picture_url:
+                          type: string
+                          example: www.pic.com/galleta.jpg
+                  category:
+                    type: number
+                    example: 2
+                  mostwanted:
+                    type: boolean
+                    default: false
+      responses:
+        '200':    # status code
+          description: Producto creado.
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      example: 43
+                    title:
+                      type: string
+                      example: Galletas
+                    price:
+                      type: number
+                      example: 50
+                    description:
+                      type: string
+                      example: Galletas de chocolate
+                    gallery:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          picture_id:
+                            type: number
+                            example: 3
+                          picture_url:
+                            type: string
+                            example: www.pic.com/galletas.jpg
+                    category:
+                      type: number
+                      example: 2
+                    mostwanted:
+                      type: boolean
+                      default: false
+                    stock:
+                      type: number
+                      example: 33
+        '400':    # status code
+          description: Faltan datos para crear el producto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Faltan datos para crear el producto
+        '401':
+          description: NO autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: string
+                    default: false
+                  message:
+                    type: string
+                    example: Token Invalido
+        
+        '500':    # status code
+          description: Error del servidor al crear el producto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Error del servidor al crear el producto
+  
+  /products/{id}:
+    get:
+      tags: 
+        - productos
+      summary: Recupera el producto con el id solicitado. 
+      security:
+        - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: Filtra el producto por el id otorgado. 
+        required: true
+        explode: true
+        schema:
+          type: number
+      responses:
+        '200':    # status code
+          description: Retorna el producto.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                    title:
+                      type: string
+                      example: Galletas
+                    price:
+                      type: number
+                      example: 50
+                    description:
+                      type: string
+                      example: Galletas de chocolate
+                    gallery:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          picture_id:
+                            type: number
+                            example: 6
+                          picture_url:
+                            type: string
+                            example: www.pic.com/galleta.jpg
+                    category:
+                      type: number
+                      example: 4
+                    mostwanted:
+                      type: boolean
+                      default: false
+        '404':    # status code
+          description: El producto no existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+        '401':
+          description: NO autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: string
+                    default: false
+                  message:
+                    type: string
+                    example: Token Invalido
+        '500':    # status code
+          description: Error del servidor al cargar el producto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+    put:
+      tags: 
+        - productos
+      summary: Actualiza el producto identificado con id. Debe recibir un body con la info del producto a modificar.
+      security:
+        - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: Filtra el producto por el id otorgado. 
+        required: true
+        explode: true
+        schema:
+          type: number
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                  title:
+                    type: string
+                    example: Galletas
+                  price:
+                    type: number
+                    example: 50
+                  description:
+                    type: string
+                    example: Galletas de chocolate
+                  gallery:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        picture_id:
+                          type: number
+                          example: 6
+                        picture_url:
+                          type: string
+                          example: wwww.pic.com/galletas/jpg
+                  category:
+                    type: number
+                    example: 2
+                  mostwanted:
+                    type: boolean
+                    default: false
+                  stock:
+                    type: number
+                    example: 10
+      responses:
+        '200':    # status code
+          description: Retorna el producto modificado.
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      example: 10
+                    title:
+                      type: string
+                      example: Galletas
+                    price:
+                      type: number
+                      example: 50
+                    description:
+                      type: string
+                      example: Galletas de chocolate
+                    gallery:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          picture_id:
+                            type: number
+                            example: 6
+                          picture_url:
+                            type: string
+                            example: www.pic.com/galleta.jpg
+                    category:
+                      type: number
+                      example: 2
+                    mostwanted:
+                      type: boolean
+                      default: false
+                    stock:
+                      type: number
+                      example: 10
+        '404':    # status code
+          description: El producto no existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: El producto no existe
+        '500':    # status code
+          description: Error del servidor al modificar el producto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Error del servidor al cargar el producto
+    delete:
+      tags: 
+        - productos
+      summary: Elimina el producto identificado con id. 
+      security:
+        - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: Filtra el producto por el id otorgado. 
+        required: true
+        explode: true
+        schema:
+          type: number
+      responses:
+        '200':    # status code
+          description: Producto eliminado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Producto eliminado correctamente
+        '401':    # status code
+          description: Usuario no autorizado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Token invalido
+        '404':    # status code
+          description: El producto no existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: El producto no existe.
+        '500':    # status code
+          description: Error del servidor al eliminar el producto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Error del servidor al elimnar el producto
+
+  /products/mostwanted:
+    get:
+      tags: 
+        - productos
+      summary:  Recupera una lista de productos que tienen el atributo mostwanted establecido en true.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':    # status code
+          description: Retorna array con los productos.
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      example: 2
+                    title:
+                      type: string
+                      example: Galletas
+                    price:
+                      type: number
+                      example: 50
+                    description:
+                      type: string
+                      example: Galletas de chocolate
+                    gallery:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          picture_id:
+                            type: number
+                            example: 1
+                          picture_url:
+                            type: string
+                            example: wwww.pic.com/galletas.jpg
+                    category:
+                      type: number
+                      example: 2
+                    mostwanted:
+                      type: boolean
+                      example: false
+                    stock:
+                      type: number
+                      example: 2
+        '404':
+          description: Productos no encontrados
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Productos no encontrados
+        '500':    # status code
+          description: Error al obtener los productos.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string  
+                    example: Error del servidor al obtener los productos
+                    
+  /products/search:
+    get:
+      tags: 
+        - productos
+      summary: Retorna un listado de todos los productos que contengan la palabra ingresada
+      security:
+        - bearerAuth: []
+      parameters: 
+        - in : query
+          name: q
+          schema:
+            type: string
+          required: false
+          description: Palabra clave para busqueda. 
+          
+          
+      responses:
+        '200':    # status code
+          description: Un array de todos los productos.
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      example: 23
+                    title:
+                      type: string
+                      example: Milanesa
+                    price:
+                      type: number
+                      example: 100
+                    description:
+                      type: string
+                      example: Milanesa de carne de vaca
+                    gallery:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          picture_id:
+                            type: number
+                            example: 2
+                          picture_url:
+                            type: string
+                            example: www.pic.com/img.jpg
+                    category:
+                      type: number
+                      example: 3
+                    mostwanted:
+                      type: boolean
+                      example: true
+                    stock:
+                      type: number
+                      example: 12
+        '404':    # status code
+          description: Productos no encontrados
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string 
+                    example: Productos no encontrados
+        '401':
+          description: NO autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: string
+                    default: false
+                  message:
+                    type: string
+                    example: Token Invalido
+        '500':    # status code
+          description: Error del servidor al cargar los productos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: 
+                    type: boolean
+                    default:
+                  message:
+                    type: string
+                    example: Error del servidor
+                    
+  /products/{id}/pictures:
+    get:
+      tags: 
+        - productos
+      summary: Recupera la lista de pictures del product identificado con id.
+      security:
+        - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: Id del producto a buscar las picture. 
+        required: true
+        explode: true
+        schema:
+          type: number
+      responses:
+        '200':    # status code
+          description: Retorna array con las picture.
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      example: 10
+                    url:
+                      type: string
+                      example: wwww.pic.com/food.jpg
+                    description:
+                      type: string
+                      example: Imagen de comida
+                    product_id:
+                      type: number
+                      example: 2
+        '401':
+          description: NO autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: string
+                    default: false
+                  message:
+                    type: string
+                    example: Token Invalido
+        '404':    # status code
+          description: No existe producto con ese id.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: No existe producto con ese id
+        '500':    # status code
+          description: Error al obtener los productos.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Error del servidor al obtener los productos
+
+
+  
+  /pictures:
+    post:
+      tags: 
+        - imagenes
+      summary:  Crea una nueva picture. Debe recibir un body con la info de la picture a crear.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema: 
+                type: object
+                properties:
+                  url:
+                    type: string
+                    example: www.pic.com/img.jpg
+                  description:
+                    type: string
+                    example: Imagen de comida
+                  product_id:
+                    type: number
+                    example: 12
+      responses:
+        '200':    # status code
+          description: Retorna la picture creada.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  id:
+                    type: number
+                    example: 2
+                  url:
+                    type: string
+                    example: www.imagen.com/
+                  description:
+                    type: string
+                    example: Imagen de comida
+                  product_id:
+                    type: number
+                    example: 12
+        '401':
+          description: Usuario no autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                      type: string
+                      example: Token invalido
+        '404':
+          description: Faltan datos para crear la imagen
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                      type: string
+                      example: Faltan datos para crear la imagen
+        '500':    # status code
+          description: Error al crear la imagen.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string  
+
+    get:
+      tags: 
+        - imagenes
+      summary: Recupera la lista de imgenes del producto identificado con id.
+      security:
+        - bearerAuth: []
+      parameters: 
+        - in : query
+          name: product
+          schema:
+            type: number
+          required: true
+          description: del producto a buscar las imagenes.
+    
+        
+      responses:
+        '200':    # status code
+          description: Retorna array con las imagenes del producto.
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      example: 5
+                    url:
+                      type: string
+                      example: www.pic.com
+                    description:
+                      type: string
+                      example: Imagen de comida
+                    product_id:
+                      type: number
+                      example: 65
+        '404':    # status code
+          description: Producto no encontrado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Producto no encontrado
+        '401':    # status code
+          description: Usuario no autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Token invalido
+        '500':    # status code
+          description: Error al obtener las imagenes.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string  
+                    example: Error de servidor
+  
+  /pictures/{id}:
+    get:
+      tags: 
+        - imagenes
+      summary: Recupera la imagen con el id solicitado.
+      security:
+        - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: Id de la imagen a buscar. 
+        required: true
+        explode: true
+        schema:
+          type: number
+      responses:
+        '200':    # status code
+          description: Retorna la imagen.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  id:
+                    type: number
+                    example: 2
+                  url:
+                    type: string
+                    example: www.imgen.com
+                  description:
+                    type: string
+                    example: Imagen de comida
+                  product_id:
+                    type: number
+                    example: 2
+        '404':    # status code
+          description: Imagen no encontrado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Imagen no encontrada
+        '401':    # status code
+          description: Usuario no autorizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Token invalido
+        '500':    # status code
+          description: Error al obtener la imagen.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string 
+                    example: Error del servidor
+    
+    put:
+      tags: 
+        - imagenes
+      summary: Actualiza la imagen identificada con id. Debe recibir un body con la info de la picture a modificar.
+      security:
+        - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: Id de la imagen a buscar. 
+        required: true
+        explode: true
+        schema:
+          type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema: 
+                type: object
+                properties:
+                  url:
+                    type: string
+                    example: wwww.imagen.com
+                  description:
+                    type: string
+                    example: Imagen de comida
+                  product_id:
+                    type: number
+                    example: 2
+      responses:
+        '200':    # status code
+          description: Retorna imagen modificada.
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  id:
+                    type: number
+                    example: 32
+                  url:
+                    type: string
+                    example: www.imagen.com
+                  description:
+                    type: string
+                    example: Imagen de comida
+                  product_id:
+                    type: number
+                    example: 2
+        '404':    # status code
+          description: Imagen no encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Imagen no encontrada
+        '400':    # status code
+          description: Error de llamada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Error de llamada
+        '500':    # status code
+          description: Error al editar la imagen.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string 
+                    example: Error de servidor
+
+    delete:
+      tags: 
+        - imagenes
+      summary: Elimina la imagen con el id solicitado.
+      security:
+        - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: Id de la imagen a buscar. 
+        required: true
+        explode: true
+        schema:
+          type: number
+      responses:
+      
+        '200':    # status code
+          description: Imagen eliminada con exito.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Imagen eliminado con exito
+                    
+        '404':    # status code
+          description: Imagen no encontrado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Imagen no encontrada
+                    
+        '401':    # status code
+          description: Usuario no autorizado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Token invalido
+        '500':    # status code
+          description: Error al eliminar a imagen.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string 
+                    example: Error de servidor
+  
+  
+  /carts/{id}:
+    get:
+      tags: 
+        - carritos
+      summary: Recupera el carrito del usuario identificado con id.
+      security:
+        - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: Id del usuario a buscar. 
+        required: true
+        explode: true
+        schema:
+          type: number
+      responses:
+        '200':    # status code
+          description: Responde con un array conteniendo los products del usuario solicitado.
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  type: object
+                  properties:
+                    product:
+                      type: number
+                      example: 77
+                    quantity:
+                      type: number
+                      example: 2
+        '404':    # status code
+          description: Usuario no encontrado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Usuario no encontrado
+                    
+        '401':    # status code
+          description: Usuario no autorizaso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Token invalido          
+        
+        '500':    # status code
+          description: Error al obtener el carrito.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string 
+                    example: Error de servidor
+
+    put:
+      tags:
+        - carritos
+      summary: Actualiza el carrito del usuario identificado con id solicitado.
+      security:
+        - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: Id de la usuario a buscar. 
+        required: true
+        explode: true
+        schema:
+          type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema: 
+                type: array
+                items:
+                  type: object
+                  properties:
+                    product_id:
+                      type: number
+                      example: 77
+                    quantity:
+                      type: number
+                      example: 2
+      responses:
+        '200':    # status code
+          description: Responde con la info completa del cart modificado.
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  type: object
+                  properties:
+                    product_id:
+                      type: number
+                      example: 77
+                    quantity:
+                      type: number
+                      example: 2
+                      
+        '404':    # status code
+          description: Usuario no encontrado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Usuario no encontrado
+        '401':    # status code
+          description: Usuario no autorizado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string
+                    example: Token invalido         
+                    
+        '500':    # status code
+          description: Error al obtener el carrito.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: false
+                  message:
+                    type: string 
+                    example: Error de servidor
+
+  

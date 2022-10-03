@@ -1,0 +1,41 @@
+[
+    {
+        "user": 1,
+        "cart": [
+            {
+                "product": 7,
+                "quantity": 2
+            },
+            {
+                "product": 4,
+                "quantity": 1
+            }
+        ]
+    },
+    {
+        "user": 2,
+        "cart": [
+            {
+                "product": 1,
+                "quantity": 2
+            },
+            {
+                "product": 8,
+                "quantity": 2
+            }
+        ]
+    },
+    {
+        "user": 4,
+        "cart": [
+            {
+                "product": 1,
+                "quantity": 2
+            },
+            {
+                "product": 8,
+                "quantity": 2
+            }
+        ]
+    }
+]

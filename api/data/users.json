@@ -1,0 +1,117 @@
+[
+  {
+    "id": 1,
+    "email": "ayrton@gmail.com",
+    "username": "agirlhasnoname",
+    "password": "123456",
+    "firstname": "Ayrton",
+    "lastname": "Senna",
+    "profilepic": "https://thispersondoesnotexist.com/image",
+    "role": "ADMIN"
+  },
+  {
+    "id": 2,
+    "email": "nacho@gmail.com",
+    "username": "nachos",
+    "password": "123456",
+    "firstname": "Ignacio",
+    "lastname": "Feito",
+    "profilepic": "https://thispersondoesnotexist.com/image2",
+    "role": "GOD"
+  },
+  {
+    "id": 3,
+    "email": "rodri@gmail.com",
+    "username": "rodri",
+    "password": "1234567",
+    "firstname": "Rodrigo",
+    "lastname": "Ferreira",
+    "profilepic": "https://thispersondoesnotexist.com/image2",
+    "role": "ADMIN"
+  },
+  {
+    "id": 4,
+    "email": "joaco@gmail.com",
+    "username": "joaco",
+    "password": "123456",
+    "firstname": "Joaquin",
+    "lastname": "Puyol",
+    "profilepic": "https://thispersondoesnotexist.com/image4",
+    "role": "GUEST"
+  },
+  {
+    "id": 5,
+    "email": "sofia@gmail.com",
+    "username": "sofia",
+    "password": "123456",
+    "firstname": "Sofia",
+    "lastname": "Perez",
+    "profilepic": "https://thispersondoesnotexist.com/image2",
+    "role": "GUEST"
+  },
+  {
+    "id": 6,
+    "email": "carlos@gmail.com",
+    "username": "carlos",
+    "password": "123456",
+    "lastname": "Perez",
+    "profilepic": "https://thispersondoesnotexist.com/image2",
+    "role": "GUEST"
+  },
+  {
+    "id": 7,
+    "email": "nacho@gmail.com",
+    "username": "nachos",
+    "password": "123456",
+    "firstname": "Ignacio",
+    "lastname": "Feito",
+    "profilepic": "https://thispersondoesnotexist.com/image2",
+    "role": "GOD"
+  },
+  {
+    "id": 8,
+    "email": "nacho@gmail.com",
+    "username": "nachos",
+    "password": "123456",
+    "firstname": "Ignacio",
+    "profilepic": "https://thispersondoesnotexist.com/image2",
+    "role": "GOD"
+  },
+  {
+    "id": 9,
+    "email": "nacho@gmail.com",
+    "username": "nachos",
+    "password": "123456",
+    "firstname": "Ignacio",
+    "profilepic": "https://thispersondoesnotexist.com/image2",
+    "role": "GOD"
+  },
+  {
+    "id": 10,
+    "email": "nacho@gmail.com",
+    "username": "nachos",
+    "password": "123456",
+    "firstname": "Ignacio",
+    "profilepic": "https://thispersondoesnotexist.com/image2",
+    "role": "GOD"
+  },
+  {
+    "id": 11,
+    "email": "nacho@gmail.com",
+    "username": "nachos",
+    "password": "123456",
+    "firstname": "Ignacio",
+    "profilepic": "https://thispersondoesnotexist.com/image2",
+    "role": "GOD"
+  },
+  {
+    "id": 12,
+    "email": "nacho@gmail.com",
+    "username": "nachos",
+    "password": "123456",
+    "firstname": "Ignacio",
+    "lastname": "Martinez",
+    "profilepic": "https://thispersondoesnotexist.com/image2",
+    "role": "GOD"
+  }
+]
