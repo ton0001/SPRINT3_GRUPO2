@@ -44,9 +44,9 @@ app.use('/api/v3/users', usersRoutes);
 
 
 
-app.listen(PORT, ()=> {
+const server = app.listen(PORT, ()=> {
     console.log(`server corriendo en ${PORT}`);
     sequelize.sync({ alter: true });
 })
 
-
+module.exports = {app, server}
