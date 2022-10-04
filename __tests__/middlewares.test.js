@@ -26,7 +26,7 @@ describe("usuario no tienen autorizacion ",  ()=>{
         expect(statusCode).toBe(403);
         expect(body).toEqual(expect.objectContaining({
              msg: expect.any(String),
-             ok: expect.any(Boolean)
+             ok: false
           })
        );
     })
@@ -45,7 +45,7 @@ describe("usuario no tienen autorizacion ",  ()=>{
         expect(statusCode).toBe(403);
         expect(body).toEqual(expect.objectContaining({
              msg: expect.any(String),
-             ok: expect.any(Boolean)
+             ok: false
           })
        );
     })
@@ -64,7 +64,7 @@ describe("usuario no tienen autorizacion ",  ()=>{
         expect(statusCode).toBe(401);
         expect(body).toEqual(expect.objectContaining({
              msg: expect.any(String),
-             ok: expect.any(Boolean)
+             ok: false
           })
        );
     })
@@ -83,7 +83,7 @@ describe("usuario no tienen autorizacion ",  ()=>{
         expect(statusCode).toBe(401);
         expect(body).toEqual(expect.objectContaining({
              msg: expect.any(String),
-             ok: expect.any(Boolean)
+             ok: false
           })
        );
     })

@@ -43,7 +43,7 @@ afterEach(() => {
       expect(statusCode).toBe(401);
       expect(body).toEqual(expect.objectContaining({
             msg: expect.any(String),
-            ok: expect.any(Boolean)
+            ok: false
          })
       );
 
@@ -90,7 +90,7 @@ afterEach(() => {
 
      expect(body).toEqual(expect.objectContaining({
       msg: expect.any(String),
-      ok: expect.any(Boolean)
+      ok: false
          })
    );
    
@@ -103,10 +103,71 @@ afterEach(() => {
      expect(statusCode).toBe(401);
      expect(body).toEqual(expect.objectContaining({
            msg: expect.any(String),
-           ok: expect.any(Boolean)
+           ok: false
         })
      );
      
+  });
+
+});
+
+describe('GET api/v3/products/search?q=keyword', () => {
+
+   test('Debe obtener todos los productos que tengan algun campo con la keyword', async () => {
+       
+
+      const token = await generateJWT();
+      const keyword = 'chocolate'
+
+      const { statusCode, body } = await request(app).get('/api/v3/products/search?q=' + keyword).auth(token, { type: 'bearer' });
+   
+      // console.log(statusCode, body);
+     expect(statusCode).toEqual(200);
+
+     expect(body).toEqual(expect.arrayContaining([
+         expect.objectContaining({
+            id: expect.any(Number),
+            title: expect.any(String),
+            price: expect.any(String),
+            description: expect.any(String),
+            category_id: expect.any(Number),
+            stock: expect.any(Number),  
+            mostwanted: expect.any(Boolean)
+         })
+      ]));
+
+      
+     });
+
+     test('No se encuentran productos con ese keywrod', async () => {
+   
+      const keyword = 'hgriedgd'
+      const token = await generateJWT();
+
+      const { statusCode, body } = await request(app).get('/api/v3/products/search?q=' + keyword).auth(token, { type: 'bearer' });
+      // console.log(statusCode, body);
+     expect(statusCode).toBe(404);
+     expect(body).toEqual(expect.objectContaining({
+           msg: expect.any(String),
+           ok: false
+        })
+     );
+   })
+
+
+   test('Pedir productos sin lograrse primero', async () => {
+   
+      const keyword = 'hgriedgd'
+     const { statusCode, body } = await request(app).get('/api/v3/products/search?q=' + keyword);
+      // console.log(statusCode, body);
+     expect(statusCode).toBe(401);
+     expect(body).toEqual(expect.objectContaining({
+           msg: expect.any(String),
+           ok: false
+        })
+     );
+
+         
   });
 
 });

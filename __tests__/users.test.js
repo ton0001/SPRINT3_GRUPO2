@@ -61,7 +61,7 @@ afterEach(() => {
        expect(statusCode).toBe(400);
        expect(body).toEqual(expect.objectContaining({
              msg: expect.any(String),
-             ok: expect.any(Boolean)
+             ok: false
           })
        );
 
@@ -80,7 +80,7 @@ afterEach(() => {
        expect(statusCode).toBe(404);
        expect(body).toEqual(expect.objectContaining({
              msg: expect.any(String),
-             ok: expect.any(Boolean)
+             ok: false
           })
        );
        
@@ -144,7 +144,7 @@ afterEach(() => {
         expect(statusCode).toBe(404);
                expect(body).toEqual(expect.objectContaining({
                      msg: expect.any(String),
-                     ok: expect.any(Boolean)
+                     ok: false
                   })
                );
         
