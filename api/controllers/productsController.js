@@ -29,7 +29,7 @@ const productController = {
     } catch (error) {
       res.status(500).json({
         ok: false,
-        message: "Error del servidor al cargar los productos",
+        msg: "Error del servidor al cargar los productos",
       });
       console.log("Catch error" + error);
     }
@@ -66,7 +66,7 @@ const productController = {
     } catch (error) {
       res.status(500).json({
         ok: false,
-        message: "Error del servidor "
+        msg: "Error del servidor "
       });
     }
   },
@@ -93,7 +93,7 @@ const productController = {
     } catch (error) {
       res.status(500).json({
         ok: false,
-        message: "Error del servidor al crear el producto",
+        msg: "Error del servidor al crear el producto",
       });
     }
   },
@@ -126,7 +126,7 @@ const productController = {
     } catch (error) {
      res.status(500).json({
       ok: false, 
-      message: "Error del servidor",
+      msg: "Error del servidor",
      })
     }
   },
@@ -147,7 +147,7 @@ const productController = {
       console.log(err);
       res.status(400).json({
         ok: false,
-        message: "Error inesperado",
+        msg: "Error inesperado",
       });
     }
   },
@@ -177,7 +177,7 @@ const productController = {
        
             res.status(204).json({
               ok: true, 
-              message: "Este producto no tiene imagenes asociadas"
+              msg: "Este producto no tiene imagenes asociadas"
         })
         } else {
           res.status(200).json(productImage)
@@ -216,7 +216,7 @@ const productController = {
       if(product.length === 0){
         res.status(400).json({
           ok: false,
-          message: "No existe esa categoria"
+          msg: "No existe esa categoria"
         })
       } else {
         res.status(200).json(product)
@@ -227,7 +227,7 @@ const productController = {
       console.log(err);
       res.status(500).json({
         ok: false,
-        message: "Error interno",
+        msg: "Error interno",
       });
     }
   },
@@ -262,13 +262,13 @@ const productController = {
       })
     
     if (filteredProducto.length === 0) {
-       res.status(404).json({ ok: false, message: "No se encontraron productos" });
+       res.status(404).json({ ok: false, msg: "No se encontraron productos" });
        } else {
         res.status(200).json(filteredProducto)
        }
     } catch (error) {
       console.log(error)
-      res.status(500).json({ ok: false, message: "Error al obtener los productos" });
+      res.status(500).json({ ok: false, msg: "Error al obtener los productos" });
     }
   },
 
@@ -290,13 +290,13 @@ const productController = {
         await searchingProductToDelete.destroy();
         res.status(200).json({
           ok: true,
-          message: "El producto se eliminó con exito"
+          msg: "El producto se eliminó con exito"
         })
       } else {
         
         res.status(400).json({
           ok: false, 
-          message: "El producto que desea eliminar no existe en nuestra base de datos"
+          msg: "El producto que desea eliminar no existe en nuestra base de datos"
         })
       }
         

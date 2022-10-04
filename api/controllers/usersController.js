@@ -4,6 +4,7 @@ const initModels = require('../../database/models/init-models');
 const { sequelize } = require('../../database/models');
 const carts = require('../../database/models/carts');
 const users = require('../../database/models/users');
+const e = require('express');
 const models = initModels(sequelize);
 
 /*recupero la lista de usuarios, respondo con un array conteniendo 
@@ -38,7 +39,7 @@ const getUsers = async (req, res) => {
     console.log(error);
     res.status(500).json({
       ok: false,
-      message: 'Error al obtener los usuarios' });
+      msg: 'Error al obtener los usuarios' });
     const usersArray = JSON.parse(users);
     res.json(usersArray);
   }
@@ -78,14 +79,14 @@ const getUserById = async (req, res) => {
     });
    
     if (!user) {
-      res.status(404).json({ ok: false, message: 'Usuario no encontrado' });
+      res.status(404).json({ ok: false, msg: 'Usuario no encontrado' });
     }
     else{
       res.status(200).json(user);
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ ok: false, message: 'Error al obtener el usuario' });
+    res.status(500).json({ ok: false, msg: 'Error al obtener el usuario' });
   }
 };
 
@@ -106,7 +107,7 @@ const createUser = async (req, res) => {
   }catch(error){
     return res.status(500).json({ 
           ok: false,
-          message: "Hubo un error al crear el usuario"
+          msg: "Hubo un error al crear el usuario"
          });
   }
   try{
@@ -121,7 +122,7 @@ const createUser = async (req, res) => {
   }catch(error){
     return res.status(500).json({ 
       ok: false,
-      message: "Hubo un error al crear el carrito del usuario"
+      msg: "Hubo un error al crear el carrito del usuario"
     });
   }
 }
@@ -140,27 +141,24 @@ const updateUser = async (req, res) => {
       attributes: {exclude: ['user_id']}
         
     });
+    if(!user){
+      res.status(404).json({ ok: false, msg: "Usuario no encontrado" });
+    }else{
+      const updatedUser = await models.users.update(req.body, {
+        where: { id: req.params.id },
+      });
+      const userUpdated = await models.users.findByPk(req.params.id, {
+        attributes: { exclude: ['password']}
+      })
 
-    const updatedUser = await models.users.update(req.body, {
-      where: { id: req.params.id },
-    });
-    const userUpdated = await models.users.findByPk(req.params.id, {
-      attributes: { exclude: ['password']}
-    })
-
-
-    if (updatedUser) {
-      res.status(200).json(
-        userUpdated.dataValues
-    );
-    } else if (!user) {
-      res.status(400).json({ ok: false, message: "Solicitud Incorrecta" });
-    } else {
-      res.status(404).json({ ok: false, message: "Usuario no encontrado" });
+      if (updatedUser) {
+        res.status(200).json(
+          userUpdated.dataValues
+      )}
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ok: false,  message: "Error al actualizar el usuario" });
+    res.status(500).json({ok: false,  msg: "Error al actualizar el usuario" });
   }
 };
 
@@ -196,25 +194,27 @@ const deleteUserById = async (req, res) => {
       ],
     });
     if (!user) {
-      res.status(404).json({ ok: false, message: 'Usuario no encontrado' });
+      res.status(404).json({ ok: false, msg: 'Usuario no encontrado' });
     }
-
-    console.log('PRODUCTS:', user.carts.product_carts.length);
-    if (user.carts.product_carts.length == 0) {
-      await models.carts.destroy({
-        where: { user_id: req.params.id },
-      });
-      await user.destroy();
-      res.status(200).json({ ok: true, message: 'Usuario eliminado!!!!' });
-    } else {
-      res.status(400).json({
-        ok: false,
-        message: 'No se puede eliminar un usuario con productos en el carrito',
-      });
+    else{
+      // console.log('PRODUCTS:', user.carts.product_carts.length);
+      if (user.carts.product_carts.length == 0) {
+        await models.carts.destroy({
+          where: { user_id: req.params.id },
+        });
+        await user.destroy();
+        res.status(200).json({ ok: true, msg: 'Usuario eliminado!!!!' });
+      } else {
+        res.status(400).json({
+          ok: false,
+          msg: 'No se puede eliminar un usuario con productos en el carrito',
+        });
+      }
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ ok: false, message: 'Error al eliminar el usuario' });
+
+    res.status(500).json({ ok: false, msg: 'Error al eliminar el usuario' });
   }
 };
 
@@ -232,7 +232,7 @@ const login = async (req, res)=>{
       if (!user_exist){
         return res.status(400).json({
           ok: false,
-          message: 'Wrong password or username'
+          msg: 'Wrong password or username'
         })
       }
 
@@ -245,7 +245,7 @@ const login = async (req, res)=>{
 
       res.status(200).json({
           'success': true,
-          'message': 'Authorized Login Success',
+          'msg': 'Authorized Login Success',
           'user': userLog,
           token,
       })
