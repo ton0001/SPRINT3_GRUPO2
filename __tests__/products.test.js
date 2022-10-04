@@ -1,10 +1,11 @@
-
 const request = require('supertest');
 const { app , server} = require('../server');
 const { generateJWT } = require('../helpers/generateJWT');
 
 afterEach(() => {
     server.close()
+    jest.setTimeout(30000);
+
  });
 
 
@@ -67,7 +68,7 @@ afterEach(() => {
          expect.objectContaining({
             id: expect.any(Number),
             title: expect.any(String),
-            price: expect.any(String),
+            price : expect.any(String),
             description: expect.any(String),
             category_id: expect.any(Number),
             stock: expect.any(Number),  
