@@ -122,6 +122,7 @@ describe("PUT /api/v3/products/:id", () => {
             description: "esta es una nueva descripcion actualizada"
         };
 
+        // creacion de token
         const guest_user = {
             id: 2,
             username: 'ibrabham1',

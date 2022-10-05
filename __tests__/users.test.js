@@ -6,8 +6,7 @@ afterEach(() => {
 });
 
 describe("POST /api/v3/users", () => {
-    // test para crear un usuario
-    test("Debe devolver un código de estado 200 y la informacion del usuario creado", async () => {
+    test("Creacion de un usuario correctamente", async () => {
         // creo una cadena de caracteres random
         const  generateRandomString = (num) => {
             const characters ='abcdefghijklmnopqrstuvwxyz0123456789';
@@ -56,8 +55,7 @@ describe("POST /api/v3/users", () => {
         }));
     });
 
-    //test para verificar todos los campos a la hora de crear un usuario
-    test("Debe devolver un código de estado 400 y la informacion de los datos que son necesarios", async () => {
+    test("Intentar crear un usuario faltando rellenar campos", async () => {
         // simulacion de los datos a enviar para crear el usuario 
         const data = {
 
