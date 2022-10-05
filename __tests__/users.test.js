@@ -4,7 +4,9 @@ const { generateJWT } = require('../helpers/generateJWT');
 
 const { sequelize } = require('../database/models');
 const initModels = require('../database/models/init-models');
+const db = require('../database/models');
 const models = initModels(sequelize);
+const sinon = require("sinon");
 
 
 afterEach(() => {
@@ -25,7 +27,7 @@ afterEach(() => {
        const token = await generateJWT(god_user);
  
        const { statusCode, body } = await request(app).delete(`/api/v3/users/${id}`).auth(token, {type: 'bearer'});
-       console.log(body)
+    //    console.log(body)
 
        expect(statusCode).toBe(200);
        expect(body).toEqual(expect.objectContaining({
@@ -244,4 +246,89 @@ describe("POST /api/v3/users", () => {
             errors: expect.any(Array)
         }));
     })
+});
+
+describe("GET /api/v3/users", () => {
+    test("Listar los usuarios correctamente", async () => {
+        // creacion del token
+        const admin_user = {
+            id: 3,
+            username: 'juffffaanperez',
+        };
+        const token = await generateJWT(admin_user);
+
+        // realizo la peticion
+        const { statusCode, body } = await request(app).get("/api/v3/users").auth(token, {type: 'bearer'});
+
+        // comprobar codigo de status
+        expect(statusCode).toBe(200);
+
+        // comprobacion del send de la respuesta
+        expect(body).toEqual(expect.any(Array));
+    });
+
+    test("Fallo en listar los usuarios por no logearse", async () => {
+        // realizo la peticion
+        const { statusCode, body } = await request(app).get("/api/v3/users");
+
+        // comprobar codigo de status
+        expect(statusCode).toBe(401);
+
+        // comprobar respuesta
+        expect(body).toEqual(
+            expect.objectContaining({
+                ok: false,
+                msg: expect.any(String)
+            })
+        );
+    });
+
+    test("Fallo en listar los usuarios por logearse como guest", async () => {
+        // creacion de token
+        const guest_user = {
+            id: 2,
+            username: 'carlos',
+        };
+        const token = await generateJWT(guest_user);
+
+        // realizo la peticion
+        const { statusCode, body } = await request(app).get("/api/v3/users").auth(token, {type: 'bearer'});
+
+        // comprobar codigo de status
+        expect(statusCode).toBe(401);
+
+        // comprobar respuesta
+        expect(body).toEqual(
+            expect.objectContaining({
+                ok: false,
+                msg: expect.any(String)
+            })
+        );
+    });
+
+    test("Fallo en listar los usuarios por error de server", async () => {
+        // creacion del token
+        const admin_user = {
+        
+        };
+        
+        // cierro el server
+        await sinon.stub().throws();
+        
+        const token = await generateJWT(admin_user);
+        
+        // realizo la peticion
+        const { statusCode, body } = await request(app).get("/api/v3/users").auth(token, {type: 'bearer'});
+
+        // comprobar codigo de status
+        expect(statusCode).toBe(500);
+
+        // comprobar respuesta
+        expect(body).toEqual(
+            expect.objectContaining({
+                ok: false,
+                msg: expect.any(String)
+            })
+        );
+    });
 });

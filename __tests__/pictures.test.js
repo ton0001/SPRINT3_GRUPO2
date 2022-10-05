@@ -138,4 +138,27 @@ describe("POST /api/v3/pictures", () => {
             })
         );
     });
+
+    test("Fallo en crear una picture por no tener autorizacion, por no logearse", async () => {
+        // simulacion de los datos a enviar para crear una picture  
+        const data = {
+            url: 'http://dummyimage.com/117x100.png/cc0000/ffffff',
+            description: 'Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat. Curabitur gravida nisi at nibh.',
+            product_id: '31'
+        }
+
+        // envio de los datos
+        const { statusCode, body } = await request(app).post("/api/v3/pictures").send(data);
+
+        // comprobacion del status
+        expect(statusCode).toBe(401);
+
+        // comprobar respuesta
+        expect(body).toEqual(
+            expect.objectContaining({
+                ok: false,
+                msg: expect.any(String)
+            })
+        );
+    });
 });
