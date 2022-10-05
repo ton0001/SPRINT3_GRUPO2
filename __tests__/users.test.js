@@ -14,17 +14,18 @@ afterEach(() => {
 
 
 
- describe('DELETE /api/v3/users/:id', () => {
+ describe('DELETE /api/v3/users/:id',  () => {
 
     test('Borrar un usuario, debe devolver codigo 200', async () => {
         const god_user = {
-            id: 23,
-            username: "pitu"
+            id: 1,
+            username: "siacobo0"
         }
        const id = 5
        const token = await generateJWT(god_user);
  
        const { statusCode, body } = await request(app).delete(`/api/v3/users/${id}`).auth(token, {type: 'bearer'});
+       console.log(body)
        expect(statusCode).toBe(200);
        expect(body).toEqual(expect.objectContaining({
              msg: expect.any(String),
@@ -51,10 +52,10 @@ afterEach(() => {
 
     test('Error al borrar un usuario con productos en el carrito', async () => {
         const god_user = {
-            id: 23,
-            username: "pitu"
+            id: 1,
+            username: "siacobo0"
         }
-       const id = "3"
+       const id = 11
        const token = await generateJWT(god_user);
  
        const { statusCode, body } = await request(app).delete(`/api/v3/users/${id}`).auth(token, {type: 'bearer'});
@@ -70,8 +71,8 @@ afterEach(() => {
  
     test('Error al borrar un usuario que no existe', async () => {
         const god_user = {
-            id: 23,
-            username: "pitu"
+            id: 1,
+            username: "siacobo0"
         }
        const id = "99"
        const token = await generateJWT(god_user);
@@ -90,12 +91,12 @@ afterEach(() => {
 
  
 
- describe('PUT /api/v3/users/:id', () => {
+ describe('PUT /api/v3/users/:id',  () => {
 
     test('Actualizar usuario, debe devolver codigo 200', async () => {
         const god_user = {
-            id: 23,
-            username: "pitu"
+            id: 1,
+            username: "siacobo0"
         }
        const id = 6
        const token = await generateJWT(god_user);
@@ -128,8 +129,8 @@ afterEach(() => {
 
     test('Debe retornar un codigo 404 si el id no existe', async () => {
         const god_user = {
-            id: 23,
-            username: "pitu"
+            id: 1,
+            username: "siacobo0"
         }
        const id = 99
        const token = await generateJWT(god_user);
@@ -152,15 +153,15 @@ afterEach(() => {
 
      test('Debe retornar un codigo 400 si el email o username ya existen', async () => {
         const god_user = {
-            id: 23,
-            username: "pitu"
+            id: 1,
+            username: "siacobo0"
         }
        const id = 6
        const token = await generateJWT(god_user);
 
         const data = {
-           "username": "victoria",
-           "email": "v@gmail.com",
+           "username": "siacobo0",
+           "email": "siacobo0@patch.com",
            "password": 123456
         };
   
