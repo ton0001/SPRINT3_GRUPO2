@@ -11,7 +11,7 @@ afterEach(() => {
 });
 
 describe('GET /api/v3/pictures/:id', () => {
-    const ID = 1;
+    const ID = 2;
 
     //prueba en la que se espera que devuelva algo siempre, el id 1 siempre deberia existir
     test('Debe devolver un json de pictures y status 200 para el id 1 y siendo usuario GOD' , async () => {
