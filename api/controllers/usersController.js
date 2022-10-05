@@ -130,7 +130,7 @@ const createUser = async (req, res) => {
 /*Actualiza un usuario identificado con id. 
 Debe recibir un body con la informacion del usuario a actualizar. 
 Responde con la informacion completa del usuario actualizado.
-responder con error 400 si es una bad requesta
+responder con error 400 si es una bad request
 responder con error 404 si el usuario no existe
 responder con error 500 si hay un error en el servidor*/
 
