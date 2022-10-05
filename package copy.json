@@ -4,8 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "jest  --verbose --watchAll --detectOpenHandles",
-    "coverage": "jest  --coverage"
+    "test": "jest --watchAll --verbose --detectOpenHandles"  ,
+    "coverage": "jest --coverage"
+
   },
   "repository": {
     "type": "git",

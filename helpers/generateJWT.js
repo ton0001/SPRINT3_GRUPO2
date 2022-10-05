@@ -19,4 +19,4 @@ const generateJWT = (payload = {} ) => {
 
 }
 
-module.exports = { generateJWT }
+module.exports = {generateJWT}

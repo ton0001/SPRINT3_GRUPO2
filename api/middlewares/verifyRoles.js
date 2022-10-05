@@ -76,8 +76,6 @@ const isAuthenticated = (roles) => async (req, res, next) => {
     }
 
 
-
-
 const verifyUser = (req)=>{
     if (Number(req.params.id) === Number(req.tokenID)) {
         return true
