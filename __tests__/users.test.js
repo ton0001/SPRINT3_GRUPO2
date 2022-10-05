@@ -1,69 +1,69 @@
-require("iconv-lite").encodingExists("foo");
 const request = require("supertest");
 const { app, server } = require("../server");
+const { generateJWT } = require("../helpers/generateJWT");
 
-afterEach(() => {
-  server.close();
-});
-
-describe("GET /api/v3/users", () => {
-  //testear si el usurio esta logueado como GOD para crear un producto
-  test("Debe crear un producto nuevo si esta loggeado como GOD", async () => {
+//test de ruta get users/:id
+describe("GET /api/v3/users/:id", () => {
+  test("Usuario encontrado", async () => {
+    // datos para obtener un usuario
     const data = {
-      id: 1,
-      title: "test",
-      price: 100,
-      description: "test",
-      gallery: [
-        {
-          picture_id: 1,
-          picture_url: "test",
-        },
-      ],
-      categoryid: 1,
-      mostwanted: 1,
-      stock: 10,
+      id: 2,
     };
+
+    // creacion del token
+    const guest_user = {
+      id: 2,
+      username: "caralos",
+    };
+    const token = await generateJWT(guest_user);
+
+    // envio de los datos
     const { statusCode, body } = await request(app)
-      .post("/api/v3/products")
+      .get(`/api/v3/users/${data.id}`)
+      .auth(token, { type: "bearer" })
       .send(data);
+
+    // comprobar codigo de status
     expect(statusCode).toBe(200);
-    expect(body).toHaveProperty("id");
-    expect(body).toHaveProperty("title");
-    expect(body).toHaveProperty("price");
-    expect(body).toHaveProperty("description");
-    expect(body).toHaveProperty("gallery");
-    expect(body).toHaveProperty("categoryid");
-    expect(body).toHaveProperty("mostwanted");
-    expect(body).toHaveProperty("stock");
+    console.log(body);
+
+    // comprobar respuesta
+    expect(body).toEqual(
+      expect.objectContaining({
+        id: data.id,
+      })
+    );
   });
 
-  // const originalDB = await db.products.findAll();
-  // await request(app).post("/api/v3/products").send(data);
-  // const newDB = await db.products.findAll();
-  // expect(newDB.length).toBe(originalDB.length + 1);
-
-  //testear que no se pueda crear un producto sin alguno de los datos requeridos
-  test("Debe responder con un status code 400", async () => {
+  // test de ruta get users/:id error 404 usuario no encontrado
+  test("Usuario no encontrado", async () => {
+    // datos para crear un producto
     const data = {
-      id: 1,
-      title: "test",
-      price: 100,
-      description: "test",
-      gallery: [
-        {
-          picture_id: 1,
-          picture_url: "test",
-        },
-      ],
-      categoryid: 1,
-      mostwanted: 1,
-      stock: 10,
+      id: 22,
     };
+
+    // creacion del token
+    const god_user = {
+      id: 1,
+      username: "siacobo0",
+    };
+    const token = await generateJWT(god_user);
+
+    // envio de los datos
     const { statusCode, body } = await request(app)
-      .post("/api/v3/products")
+      .get(`/api/v3/users/${data.id}`)
+      .auth(token, { type: "bearer" })
       .send(data);
-    expect(statusCode).toBe(400);
-    expect(body).toHaveProperty("error");
+
+    // comprobar codigo de status
+    expect(statusCode).toBe(404);
+    console.log(body);
+
+    // comprobar respuesta
+    expect(body).toEqual(
+      expect.objectContaining({
+        message: "Usuario no encontrado",
+      })
+    );
   });
 });
