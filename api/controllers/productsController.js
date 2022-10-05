@@ -120,9 +120,16 @@ const productController = {
         }
       );
       const producto = await models.products.findByPk(req.params.id)
-      res.status(200).json({
-        producto
-      });
+      if(producto){
+        res.status(200).json({
+          producto
+        });  
+      } else {
+        res.status(400).json({
+          ok: false,
+          message: 'El id del producto solicitado no existe'
+        });
+      }
     } catch (error) {
      res.status(500).json({
       ok: false, 
