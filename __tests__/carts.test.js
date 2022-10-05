@@ -1,0 +1,82 @@
+const request = require("supertest");
+const { app, server } = require("../server");
+const { verifyJWT, generateJWT } = require("../helpers/generateJWT");
+const db = require("../database/models");
+
+afterEach(() => {
+  server.close();
+});
+//   -----------    //
+
+describe("GET /carts/:id", () => {
+  test("Obtiene el carrito que se le envia por parametro", async () => {
+    const idByParam = 3;
+    const guestId = {
+      id: 3,
+      username: "mlemin2",
+    };
+
+    const token = await generateJWT(guestId);
+
+    const { body, statusCode } = await request(app)
+      .get(`/api/v3/carts/${idByParam}`)
+      .auth(token, { type: "bearer" });
+    console.log(body);
+    expect(statusCode).toBe(200);
+    expect(body).toEqual(
+      expect.objectContaining({
+        id: expect.any(Number),
+        user_id: expect.any(Number),
+      })
+    );
+  });
+  test("El id agregado no matchea con el carrito de dicho usuario", async () => {
+    const idByParam = 9;
+    const guestId = {
+      id: 3,
+      username: "mlemin2",
+    };
+
+    const token = await generateJWT(guestId);
+
+    const { body, statusCode } = await request(app)
+      .get(`/api/v3/carts/${idByParam}`)
+      .auth(token, { type: "bearer" });
+    console.log(body);
+    expect(statusCode).toBe(403);
+    expect(body).toEqual(
+      expect.objectContaining({
+        ok: false,
+        msg: expect.any(String),
+      })
+    );
+  });
+});
+
+// -------  //
+
+describe("PUT /  carts/:id", () => {
+  test("Actualización del carrito si hay ", async () => {
+    
+    const idByParam = 3;
+    
+    const guestId = {
+      id: 3,
+      username: "mlemin2",
+    };
+
+    const token = await generateJWT(guestId);
+
+    const { body, statusCode } = await request(app)
+      .put(`/api/v3/carts/${idByParam}`)
+      .auth(token, { type: "bearer" });
+    console.log(body);
+    expect(statusCode).toBe(200);
+    expect(body).toEqual(
+      expect.objectContaining({
+        id: expect.any(Number),
+        user_id: expect.any(Number),
+      })
+    );
+  });
+});
