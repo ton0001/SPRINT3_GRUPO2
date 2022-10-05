@@ -49,5 +49,4 @@ const server = app.listen(PORT, ()=> {
     sequelize.sync({ alter: true });
 })
 
-
-module.exports = { app , server};
+module.exports = {app, server}

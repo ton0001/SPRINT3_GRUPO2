@@ -24,7 +24,7 @@ router.post('/', verifyJWT, isAuthenticated(['GOD']),
 
 router.put('/:id', verifyJWT, isAuthenticated(['GOD', 'ADMIN']), productController.productEdit)
 
-router.delete("/:id", /*verifyJWT, isAuthenticated(['GOD', 'ADMIN']),*/ productController.deleteProduct)
+router.delete("/:id", verifyJWT, isAuthenticated(['GOD', 'ADMIN']), productController.deleteProduct)
 
 
 module.exports = router;
