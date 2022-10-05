@@ -180,9 +180,9 @@ const productController = {
       } 
       )
 
-        if(productImage.pictures.length === 0){
+        if(productImage == null || productImage.pictures.length === 0){
        
-            res.status(204).json({
+            res.status(404).json({
               ok: true, 
               msg: "Este producto no tiene imagenes asociadas"
         })
