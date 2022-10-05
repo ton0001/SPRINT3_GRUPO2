@@ -192,8 +192,8 @@ describe("PUT /api/v3/products/:id", () => {
 
         // creacion del token
         const admin_user = {
-            id: 4,
-            username: 'gtutchener3',
+            id: 3,
+            username: 'juffffaanperez',
         };
         const token = await generateJWT(admin_user);
 
@@ -235,8 +235,8 @@ describe("PUT /api/v3/products/:id", () => {
 
         // creacion del token
         const admin_user = {
-            id: 4,
-            username: 'gtutchener3',
+            id: 3,
+            username: 'juffffaanperez',
         };
         const token = await generateJWT(admin_user);
 
@@ -345,8 +345,8 @@ describe("DELETE /api/v3/products/:id", () => {
 
         // creacion del token
         const admin_user = {
-            id: 4,
-            username: 'gtutchener3',
+            id: 3,
+            username: 'juffffaanperez',
         };
         const token = await generateJWT(admin_user);
 
@@ -369,8 +369,8 @@ describe("DELETE /api/v3/products/:id", () => {
 
         // creacion del token
         const admin_user = {
-            id: 4,
-            username: 'gtutchener3',
+            id: 3,
+            username: 'juffffaanperez',
         };
         const token = await generateJWT(admin_user);
 

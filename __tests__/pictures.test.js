@@ -79,7 +79,7 @@ describe("POST /api/v3/pictures", () => {
         );
     });
 
-    test("Fallo en crear una picture por no tener autorizacion como admin", async () => {
+    test("Fallo en crear una picture por no tener autorizacion, como admin", async () => {
         // simulacion de los datos a enviar para crear una picture  
         const data = {
             url: 'http://dummyimage.com/117x100.png/cc0000/ffffff',
@@ -89,8 +89,8 @@ describe("POST /api/v3/pictures", () => {
 
          // creacion del token
         const admin_user = {
-            id: 4,
-            username: 'gtutchener3',
+            id: 3,
+            username: 'juffffaanperez',
         };
         const token = await generateJWT(admin_user);
 
@@ -109,7 +109,7 @@ describe("POST /api/v3/pictures", () => {
         );
     });
 
-    test("Fallo en crear una picture por no tener autorizacion como guest", async () => {
+    test("Fallo en crear una picture por no tener autorizacion, como guest", async () => {
         // simulacion de los datos a enviar para crear una picture  
         const data = {
             url: 'http://dummyimage.com/117x100.png/cc0000/ffffff',
@@ -120,7 +120,7 @@ describe("POST /api/v3/pictures", () => {
         // creacion de token
         const guest_user = {
             id: 2,
-            username: 'ibrabham1',
+            username: 'carlos',
         };
         const token = await generateJWT(guest_user);
 
