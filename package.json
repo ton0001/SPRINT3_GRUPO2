@@ -27,6 +27,7 @@
     "mysql2": "^2.3.3",
     "sequelize": "^6.23.0",
     "sequelize-cli": "^6.4.1",
+    "sinon": "^14.0.1",
     "swagger-ui-express": "^4.5.0",
     "yaml": "^2.1.1",
     "yamljs": "^0.3.0"

@@ -3,13 +3,19 @@ const { app , server} = require('../server');
 const { generateJWT } = require('../helpers/generateJWT');
 
 const { sequelize } = require('../database/models');
+const db = require('../database/models');
+const sinon = require('sinon');
+
+
 const initModels = require('../database/models/init-models');
 const models = initModels(sequelize);
+
 
 
 afterEach(() => {
     server.close();
     jest.setTimeout(30000);
+
  });
 
 
@@ -25,7 +31,7 @@ afterEach(() => {
        const token = await generateJWT(god_user);
  
        const { statusCode, body } = await request(app).delete(`/api/v3/users/${id}`).auth(token, {type: 'bearer'});
-       console.log(body)
+      //  console.log(body)
 
        expect(statusCode).toBe(200);
        expect(body).toEqual(expect.objectContaining({
@@ -245,3 +251,23 @@ describe("POST /api/v3/users", () => {
         }));
     })
 });
+
+
+
+describe('Error de servior',  () => {
+
+   test('deve devolver un status 500 si se da un error interno',async ()=>{
+
+       await sinon.stub().throws();
+      const token = await generateJWT();
+
+      let {statusCode, body} = await request(app).get('/api/v3/users').auth(token,{type:'bearer'});
+      console.log(statusCode, body);
+      expect(body).toEqual(expect.objectContaining({
+          ok:false,
+          msg:expect.any(String)
+      }))
+  
+  })
+
+})
