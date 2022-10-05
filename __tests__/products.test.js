@@ -14,14 +14,16 @@ describe("POST /api/v3/products", () => {
     // id para testear
     // let idProduct = 108;
 
-    const data = {
-      title: "test",
-      price: 100,
-      description: "test",
-      category_id: 1,
-      mostwanted: 1,
-      stock: 10,
-    };
+    const data = [
+      {
+        title: "test",
+        price: 100,
+        description: "test",
+        category_id: 1,
+        mostwanted: 1,
+        stock: 10,
+      },
+    ];
 
     // envio de los datos
     const { statusCode, body } = await request(app)
@@ -33,14 +35,17 @@ describe("POST /api/v3/products", () => {
 
     // comprobacion de la respuesta
     expect(body).toEqual(
-      expect.objectContaining({
-        title: data.title,
-        price: data.price,
-        description: data.description,
-        category_id: data.category_id,
-        mostwanted: data.mostwanted,
-        stock: data.stock,
-      })
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: expect.any(Number),
+          title: expect.any(String),
+          price: expect.any(String),
+          description: expect.any(String),
+          category_id: expect.any(Number),
+          stock: expect.any(Number),
+          mostwanted: expect.any(Boolean),
+        }),
+      ])
     );
   });
 
