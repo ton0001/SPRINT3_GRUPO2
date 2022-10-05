@@ -12,7 +12,47 @@ afterEach(() => {
 
  });
 
+ describe('GET api/v3/products', () => {
 
+    test('Debe obtener todos los productos', async () => {
+        
+
+       const token = await generateJWT();
+ 
+       const { statusCode, body } = await request(app).get('/api/v3/products').auth(token, { type: 'bearer' });
+    
+      expect(statusCode).toEqual(200);
+
+      expect(body).toEqual(expect.arrayContaining([
+          expect.objectContaining({
+             id: expect.any(Number),
+             title: expect.any(String),
+             price: expect.any(String),
+             description: expect.any(String),
+             category_id: expect.any(Number),
+             stock: expect.any(Number),  
+             mostwanted: expect.any(Boolean)
+          })
+       ]));
+ 
+       
+      });
+
+    test('Pedir productos sin lograrse primero', async () => {
+        
+      const { statusCode, body } = await request(app).get('/api/v3/products/mostwanted');
+
+      expect(statusCode).toBe(401);
+      expect(body).toEqual(expect.objectContaining({
+            msg: expect.any(String),
+            ok: false
+         })
+      );
+
+          
+   });
+
+ });
 
  describe('GET api/v3/products/mostwanted', () => {
 
