@@ -35,7 +35,7 @@ afterEach(() => {
        );
 
        newuser = {
-        id: 4,
+        id: 5,
         email: 'hola@gmail.com',
         username: 'elusername',
         password: 123456,
