@@ -55,28 +55,28 @@ describe("GET /carts/:id", () => {
 
 // -------  //
 
-describe("PUT /  carts/:id", () => {
-  test("Actualización del carrito si hay ", async () => {
+// describe("PUT /  carts/:id", () => {
+//   test("Actualización del carrito si hay ", async () => {
     
-    const idByParam = 3;
+//     const idByParam = 3;
     
-    const guestId = {
-      id: 3,
-      username: "mlemin2",
-    };
+//     const guestId = {
+//       id: 3,
+//       username: "mlemin2",
+//     };
 
-    const token = await generateJWT(guestId);
+//     const token = await generateJWT(guestId);
 
-    const { body, statusCode } = await request(app)
-      .put(`/api/v3/carts/${idByParam}`)
-      .auth(token, { type: "bearer" });
-    console.log(body);
-    expect(statusCode).toBe(200);
-    expect(body).toEqual(
-      expect.objectContaining({
-        id: expect.any(Number),
-        user_id: expect.any(Number),
-      })
-    );
-  });
-});
+//     const { body, statusCode } = await request(app)
+//       .put(`/api/v3/carts/${idByParam}`)
+//       .auth(token, { type: "bearer" });
+//     console.log(body);
+//     expect(statusCode).toBe(200);
+//     expect(body).toEqual(
+//       expect.objectContaining({
+//         id: expect.any(Number),
+//         user_id: expect.any(Number),
+//       })
+//     );
+//   });
+//});

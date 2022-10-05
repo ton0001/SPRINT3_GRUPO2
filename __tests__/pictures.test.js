@@ -32,7 +32,7 @@ describe("DELETE /pictures/:id", (req, res) => {
     db.pictures.create({
       id: 2,
       url: "https://www.acavaunaUrldelaiamgen.com",
-      description: "Esta imagen es random",
+      description: "LALALAL Esta imagen es random",
       product_id: 50,
     });
   });
