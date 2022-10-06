@@ -78,7 +78,7 @@ describe("PUT /  carts/:id", () => {
       .put(`/api/v3/carts/${idByParam}`)
       .auth(token, { type: "bearer" }).send(cart)
 
-      console.log(body);
+      
     
    expect(statusCode).toBe(200);
     expect(body).toEqual(

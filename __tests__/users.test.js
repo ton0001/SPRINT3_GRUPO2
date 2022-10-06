@@ -10,7 +10,7 @@ const sinon = require("sinon");
 
 afterEach(() => {
   server.close();
-  jest.setTimeout(30000);
+  
 });
 
 describe("POST /api/v3/users/login", () => {

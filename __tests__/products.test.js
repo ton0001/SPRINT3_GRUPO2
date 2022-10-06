@@ -8,8 +8,41 @@ const models = initModels(sequelize);
 
 afterEach(() => {
   server.close();
-  jest.setTimeout(30000);
+  
 });
+
+describe('GET api/v3/products', () => {
+
+  test('Debe obtener todos los productos', async () => {
+     const token = await generateJWT();
+     const { statusCode, body } = await request(app).get('/api/v3/products').auth(token, { type: 'bearer' });  
+    expect(statusCode).toEqual(200);
+    expect(body).toEqual(expect.arrayContaining([
+        expect.objectContaining({
+           id: expect.any(Number),
+           title: expect.any(String),
+           price: expect.any(String),
+           description: expect.any(String),
+           category_id: expect.any(Number),
+           stock: expect.any(Number),  
+           mostwanted: expect.any(Boolean)
+        })
+     ]));
+
+     
+    });
+
+  test('Pedir productos sin lograrse primero', async () => {    
+    const { statusCode, body } = await request(app).get('/api/v3/products');
+    expect(statusCode).toBe(401);
+    expect(body).toEqual(expect.objectContaining({
+          msg: expect.any(String),
+          ok: false
+       })
+    );    
+ });
+});
+
 
 describe("GET api/v3/products/mostwanted", () => {
   test("Debe obtener todos los productos que tengan mostWanted=true", async () => {
@@ -506,7 +539,7 @@ describe("POST /api/v3/products", () => {
       .auth(token, { type: "bearer" })
       .send(data);
 
-    console.log("body:", body);
+    
     const newDB = await models.products.findAll();
 
     // comprobar codigo de status
