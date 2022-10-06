@@ -13,7 +13,7 @@ describe("GET /carts/:id", () => {
     const idByParam = 3;
     const guestId = {
       id: 3,
-      username: "mlemin2",
+      username: "juffffaanpere",
     };
 
     const token = await generateJWT(guestId);
@@ -21,7 +21,7 @@ describe("GET /carts/:id", () => {
     const { body, statusCode } = await request(app)
       .get(`/api/v3/carts/${idByParam}`)
       .auth(token, { type: "bearer" });
-    console.log(body);
+  
     expect(statusCode).toBe(200);
     expect(body).toEqual(
       expect.objectContaining({
@@ -42,7 +42,7 @@ describe("GET /carts/:id", () => {
     const { body, statusCode } = await request(app)
       .get(`/api/v3/carts/${idByParam}`)
       .auth(token, { type: "bearer" });
-    console.log(body);
+    
     expect(statusCode).toBe(403);
     expect(body).toEqual(
       expect.objectContaining({
@@ -55,28 +55,66 @@ describe("GET /carts/:id", () => {
 
 // -------  //
 
-// describe("PUT /  carts/:id", () => {
-//   test("Actualización del carrito si hay ", async () => {
+describe("PUT /  carts/:id", () => {
+  test("Actualización del carrito si hay stock disponible y tiene autorizacion", async () => {
     
-//     const idByParam = 3;
+    const idByParam = 9;
     
-//     const guestId = {
-//       id: 3,
-//       username: "mlemin2",
-//     };
+    const guestId = {
+      id: 9,
+      username: "jdykinsc",
+    };
 
-//     const token = await generateJWT(guestId);
+    const cart = [{
+      "product_id": 77,
+      "quantity": 2
+    }, { "product_id": 12,
+    "quantity": 2}]
 
-//     const { body, statusCode } = await request(app)
-//       .put(`/api/v3/carts/${idByParam}`)
-//       .auth(token, { type: "bearer" });
-//     console.log(body);
-//     expect(statusCode).toBe(200);
-//     expect(body).toEqual(
-//       expect.objectContaining({
-//         id: expect.any(Number),
-//         user_id: expect.any(Number),
-//       })
-//     );
-//   });
-//});
+    const token = await generateJWT(guestId);
+
+    const { body, statusCode } = await request(app)
+    
+      .put(`/api/v3/carts/${idByParam}`)
+      .auth(token, { type: "bearer" }).send(cart)
+
+      console.log(body);
+    
+   expect(statusCode).toBe(200);
+    expect(body).toEqual(
+      expect.arrayContaining([ 
+        expect.any(Object)
+      ])
+    );
+  });
+
+  test("Error de stock no disponible", async () => {
+    
+    const idByParam = 9;
+    
+    const guestId = {
+      id: 9,
+      username: "jdykinsc",
+    };
+
+    const cart = [{
+    "product_id": 10,
+    "quantity": 2}]
+
+    const token = await generateJWT(guestId);
+
+    const { body, statusCode } = await request(app)
+    
+      .put(`/api/v3/carts/${idByParam}`)
+      .auth(token, { type: "bearer" }).send(cart)
+    
+   expect(statusCode).toBe(400);
+    expect(body).toEqual(
+      expect.objectContaining({
+        ok: false,
+        message: 'No hay stock suficiente'
+      }))
+    
+  });
+
+});
