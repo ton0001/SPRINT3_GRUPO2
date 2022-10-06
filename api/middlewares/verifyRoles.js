@@ -106,6 +106,8 @@ const getRole = async (req, res) => {
                 message: "Role cargado correctamente a req",
                 rol: req.role
           }
+        //   console.log(result);
+        //   console.log(req.tokenID);
     }catch (err) {
         console.log(err)
         result = {

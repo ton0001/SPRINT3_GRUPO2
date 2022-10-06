@@ -9,7 +9,7 @@ const generateJWT = (payload = {} ) => {
             algorithm: 'HS512'
         }, (err, token)=> {
             if (err){
-                console.log(err)
+              
                 reject('No se pudo crear el token');
             }
 
