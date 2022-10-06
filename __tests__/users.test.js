@@ -1,6 +1,9 @@
 const request = require("supertest");
 const { app, server } = require("../server");
 const { generateJWT } = require("../helpers/generateJWT");
+const initModels = require("../database/models/init-models");
+const { sequelize } = require("../database/models");
+const models = initModels(sequelize);
 
 afterEach(() => {
   server.close();
@@ -119,6 +122,54 @@ describe("GET /api/v3/users/:id", () => {
       expect.objectContaining({
         msg: "Unauthorized ID does not match with logged ID (Guest)",
         ok: false,
+      })
+    );
+  });
+});
+
+describe("PUT /api/v3/products/:id", () => {
+  test("Actualizacion de un producto correctamente", async () => {
+    // id para testear
+    let idProduct = 3;
+
+    // datos para actualizar un producto
+    const data = {
+      title: "producto actualizado",
+      price: "350000",
+      description: "esta es una nueva descripcion actualizada",
+    };
+
+    // creacion del token
+    const admin_user = {
+      id: 3,
+      username: "juffffaanperez",
+    };
+    const token = await generateJWT(admin_user);
+
+    // traer los datos del producto para corroborar que los datos se actualicen
+    const product = await models.products.findByPk(idProduct);
+
+    // envio de los datos
+    const { statusCode, body } = await request(app)
+      .put(`/api/v3/products/${idProduct}`)
+      .auth(token, { type: "bearer" })
+      .send(data);
+
+    // comprobar codigo de status
+    expect(statusCode).toBe(200);
+
+    // comprobar respuesta
+    expect(body).toEqual(
+      expect.objectContaining({
+        producto: expect.objectContaining({
+          id: idProduct,
+          title: data.title || product.dataValues.title,
+          price: data.price || product.dataValues.price,
+          description: data.description || product.dataValues.description,
+          category_id: data.category_id || product.dataValues.category_id,
+          mostwanted: data.mostwanted || product.dataValues.mostwanted,
+          stock: data.stock || product.dataValues.stock,
+        }),
       })
     );
   });

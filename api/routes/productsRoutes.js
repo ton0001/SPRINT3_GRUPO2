@@ -14,12 +14,14 @@ router.get("/search", verifyJWT, productController.searchProduct);
 router.get("/:id/pictures", verifyJWT, productController.getPicByProductId);
 router.get("/:id", verifyJWT, productController.oneProduct);
 router.post(
-  "/" /*verifyJWT, isAuthenticated(['GOD']), 
-        check('title', 'nombre del producto es requerido').not().isEmpty(),
-        check('price', 'un precio es requerido').not().isEmpty(),
-        check('description', 'una descripcion es requerida').not().isEmpty(),
-        check('category', 'una categoria es requerida').not().isEmpty(),
-        handleErrors,*/,
+  "/",
+  verifyJWT,
+  isAuthenticated(["GOD"]),
+  check("title", "nombre del producto es requerido").not().isEmpty(),
+  check("price", "un precio es requerido").not().isEmpty(),
+  check("description", "una descripcion es requerida").not().isEmpty(),
+  check("category", "una categoria es requerida").not().isEmpty(),
+  handleErrors,
   productController.createProdut
 );
 

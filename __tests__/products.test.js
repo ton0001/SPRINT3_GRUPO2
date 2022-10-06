@@ -13,12 +13,16 @@ afterEach(() => {
 describe("POST /api/v3/products", () => {
   test("Debe devolver un estado 200 si el producto fue creado correctamente", async () => {
     //datos para crear un producto
+
     const data = {
       title: "Producto de prueba",
-      price: 100,
-      description: "Producto de prueba",
+      price: "100",
+      description: "randomString",
       category: 1,
+      mostwanted: 1,
+      stock: 10,
     };
+
     //creacion del token
     const god_user = {
       id: 1,
@@ -28,31 +32,35 @@ describe("POST /api/v3/products", () => {
 
     //envio de los datos
     const originalDB = await models.products.findAll();
-    console.log("originalDB:", originalDB.length);
+    console.log("originalDB+1:", originalDB.length + 1);
     const { statusCode, body } = await request(app)
       .post(`/api/v3/products`)
       .auth(token, { type: "bearer" })
       .send(data);
 
+    console.log("body:", body);
     const newDB = await models.products.findAll();
-    console.log("newDB:", newDB.length);
 
     // comprobar codigo de status
     expect(statusCode).toBe(200);
     expect(originalDB.length + 1).toBe(newDB.length);
 
     // comprobar respuesta
-    expect(body).toEqual;
-    expect.arrayContaining([
+    expect(body).toEqual(
       expect.objectContaining({
-        id: expect.any(Number),
-        title: data.title,
-        price: data.price,
-        description: data.description,
-        category_id: data.category,
-      }),
-    ]);
+        producto: expect.objectContaining({
+          id: expect.any(Number),
+          title: expect.any(String),
+          price: expect.any(String),
+          description: expect.any(String),
+          category_id: expect.any(Number),
+          mostwanted: expect.any(Boolean),
+          stock: expect.any(Number),
+        }),
+      })
+    );
   });
+
   //Debe devolver un estado 400 si faltan datos para crear el producto
   test("Debe devolver un estado 400 si faltan datos para crear el producto", async () => {
     //datos para crear un producto
@@ -70,14 +78,13 @@ describe("POST /api/v3/products", () => {
 
     //envio de los datos
     const originalDB = await models.products.findAll();
-    console.log("originalDB:", originalDB.length);
+
     const { statusCode, body } = await request(app)
       .post(`/api/v3/products`)
       .auth(token, { type: "bearer" })
       .send(data);
 
     const newDB = await models.products.findAll();
-    console.log("newDB:", newDB.length);
 
     // comprobar codigo de status
     expect(statusCode).toBe(400);
@@ -108,29 +115,24 @@ describe("POST /api/v3/products", () => {
 
     //envio de los datos
     const originalDB = await models.products.findAll();
-    console.log("originalDB:", originalDB.length);
+
     const { statusCode, body } = await request(app)
       .post(`/api/v3/products`)
       .send(data);
 
     const newDB = await models.products.findAll();
-    console.log("newDB:", newDB.length);
 
     // comprobar codigo de status
     expect(statusCode).toBe(401);
     expect(originalDB.length).toBe(newDB.length);
 
     // comprobar respuesta
-    expect(body).toEqual;
-    expect.arrayContaining([
+    expect(body).toEqual(
       expect.objectContaining({
-        id: expect.any(Number),
-        title: data.title,
-        price: data.price,
-        description: data.description,
-        category_id: data.category,
-      }),
-    ]);
+        msg: "Token Invalido",
+        ok: false,
+      })
+    );
   });
 });
 
