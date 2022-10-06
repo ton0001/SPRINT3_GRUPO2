@@ -15,14 +15,9 @@ afterEach(() => {
  describe('GET api/v3/products', () => {
 
     test('Debe obtener todos los productos', async () => {
-        
-
        const token = await generateJWT();
- 
-       const { statusCode, body } = await request(app).get('/api/v3/products').auth(token, { type: 'bearer' });
-    
+       const { statusCode, body } = await request(app).get('/api/v3/products').auth(token, { type: 'bearer' });  
       expect(statusCode).toEqual(200);
-
       expect(body).toEqual(expect.arrayContaining([
           expect.objectContaining({
              id: expect.any(Number),
@@ -38,20 +33,15 @@ afterEach(() => {
        
       });
 
-    test('Pedir productos sin lograrse primero', async () => {
-        
+    test('Pedir productos sin lograrse primero', async () => {    
       const { statusCode, body } = await request(app).get('/api/v3/products/mostwanted');
-
       expect(statusCode).toBe(401);
       expect(body).toEqual(expect.objectContaining({
             msg: expect.any(String),
             ok: false
          })
-      );
-
-          
+      );    
    });
-
  });
 
  describe('GET api/v3/products/mostwanted', () => {
@@ -141,8 +131,8 @@ afterEach(() => {
    });
 
    test('Pedir productos sin lograrse primero', async () => {
-       
-     const { statusCode, body } = await request(app).get('/api/v3/products/mostwanted');
+    const id = 20
+    const { statusCode, body } = await request(app).get('/api/v3/products/category=' + id);
 
      expect(statusCode).toBe(401);
      expect(body).toEqual(expect.objectContaining({

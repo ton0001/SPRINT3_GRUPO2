@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/ton0001/grupo2sprint1#readme",
   "dependencies": {
+    "@sinonjs/referee": "github:sinonjs/referee",
+    "assert": "^2.0.0",
     "cors": "^2.8.5",
     "coverage": "^0.4.1",
     "dotenv": "^16.0.2",
@@ -25,6 +27,7 @@
     "express-validator": "^6.14.2",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
+    "pubsub-js": "^1.9.4",
     "sequelize": "^6.23.0",
     "sequelize-cli": "^6.4.1",
     "sinon": "^14.0.1",

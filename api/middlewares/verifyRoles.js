@@ -111,7 +111,7 @@ const getRole = async (req, res) => {
         result = {
             status: 500,
             ok : false,
-            message: "Error de servidor"
+            message: "Error de servidor1"
         }
 
     }
