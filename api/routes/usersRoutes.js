@@ -22,8 +22,7 @@ const handleErrors = require("../middlewares/handleErros");
 
 const { verifyUnique } = require('../../helpers/verifyUnique');
 
-
-router.get('/', verifyJWT, isAuthenticated(['GOD', 'ADMIN']), getUsers);
+router.get('/', verifyJWT, getUsers);
 
 router.get("/:id", verifyJWT, isAuthenticated(['GOD', 'ADMINID', 'GUESTID']), getUserById);
 

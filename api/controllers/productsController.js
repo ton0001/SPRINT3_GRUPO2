@@ -2,8 +2,6 @@
 const { Op } = require('sequelize');
 const initModels = require("../../database/models/init-models");
 const { sequelize, Sequelize } = require("../../database/models");
-const Utils = Sequelize.Utils;
-const { QueryTypes } = require('sequelize');
 
 
 const models = initModels(sequelize);
@@ -152,7 +150,7 @@ const productController = {
 
     } catch (err) {
       console.log(err);
-      res.status(400).json({
+      res.status(500).json({
         ok: false,
         msg: "Error inesperado",
       });
@@ -192,11 +190,7 @@ const productController = {
       
      
     } catch (error) {
-      console.log(error);
-      res.status(500).json({
-        ok: false,
-        msg: "server error",
-      });
+      res.status(500).json({ok: false, msg: "server error"});
     }
   },
 
@@ -310,10 +304,7 @@ const productController = {
       
     } catch (error) {
       console.log(error);
-      res.status(500).json({
-        ok: false,
-        msg: "Error del servidor al eliminar el producto",
-      });
+      res.status(500).json({ok: false, msg: "Error del servidor al eliminar el producto"});
     }
   },
 };

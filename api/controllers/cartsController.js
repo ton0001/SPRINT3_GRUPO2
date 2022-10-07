@@ -28,11 +28,7 @@ const controllerCart = {
 
       res.status(200).json(cartDB)
     } catch (error) {
-        console.log(error);
-        res.status(500).json({
-          ok: false,
-          message: 'Error interno del servidor'
-        });
+        res.status(500).json({ ok: false, message: 'Error interno del servidor'});
     }
   },
   updateCart: async (req, res) => {
@@ -150,11 +146,7 @@ const controllerCart = {
           res.status(200).json(cartDBupdate)
         }
     } catch (err){
-      console.log(err)
-      res.status(500).json({
-        ok:false,
-        message: 'Error interno del servidor'
-      });
+      res.status(500).json({ok:false, message: 'Error interno del servidor'});
     }
     
   }

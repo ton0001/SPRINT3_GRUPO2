@@ -10,22 +10,12 @@ const getPictureByProductId = async (req, res) => {
     })
 
     if(resp.length > 0){
-        res.status(200).json({
-            ok: true,
-            resp
-        });
+        res.status(200).json({ ok: true, resp});
     }else{
-        res.status(404).json({
-            ok: false,
-            message: 'no data found'
-        });
+        res.status(404).json({ok: false, message: 'no data found' });
     }
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      ok: false,
-      message: "server error",
-    });
+    res.status(500).json({ ok: false, message: "server error",});
   }
 };
 
@@ -91,10 +81,7 @@ const createPic = async (req, res) => {
 
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      ok: false,
-      message: "server error",
-    });
+    res.status(500).json({ok: false, message: "server error"});
   }
 };
 
@@ -111,17 +98,10 @@ const updatePic = async (req, res) => {
               })
       }
       else if (modificado[0]==0 ){
-        res.status(400).json({
-          ok: false,
-          msg: "no se encontro imagen para actualizar o la imagen ya se encuentra actualizada",
-        })
+        res.status(400).json({ok: false, msg: "no se encontro imagen para actualizar o la imagen ya se encuentra actualizada"})
       }
   } catch(error){
-    console.log(error)
-    res.status(500).json({
-      ok: false,
-      message: "Error del servidor"
-    })
+    res.status(500).json({ok: false, message: "Error del servidor"})
   } 
   
 };
@@ -141,11 +121,7 @@ const deletePicture = async (req, res) => {
     
 
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      ok: false,
-      message: "server error",
-    });
+    res.status(500).json({ok: false, message: "server error"});
   }
 };
 

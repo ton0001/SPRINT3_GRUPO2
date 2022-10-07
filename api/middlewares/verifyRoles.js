@@ -57,20 +57,9 @@ const isAuthenticated = (roles) => async (req, res, next) => {
                         });
                 }
             break;
-                    
-            default:
-                return res.status(401).json({
-                    ok: false,
-                    msg: "Unauthorized bad request",
-                });
-            break
-            }
         }
-        else{
-            return res.status(result.status).json({
-               ok: false,
-               msg: result.message,
-                });
+    }else{
+            return res.status(result.status).json({ok: false, msg: result.message});
             }
 
     }
@@ -101,21 +90,13 @@ const getRole = async (req, res) => {
           
           req.role = user_exist.role;
           result= {
-                status: 200,
-                ok : true,
-                message: "Role cargado correctamente a req",
+                status: 200, ok : true, message: "Role cargado correctamente a req",
                 rol: req.role
           }
         //   console.log(result);
         //   console.log(req.tokenID);
     }catch (err) {
-        console.log(err)
-        result = {
-            status: 500,
-            ok : false,
-            message: "Error de servidor1"
-        }
-
+        result = {status: 500, ok : false, message: "Error de servidor1"}
     }
     return result
 };

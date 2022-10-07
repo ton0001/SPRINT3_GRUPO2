@@ -39,9 +39,7 @@ const getUsers = async (req, res) => {
     console.log(error);
     res.status(500).json({
       ok: false,
-      msg: 'Error al obtener los usuarios' });
-    const usersArray = JSON.parse(users);
-    res.json(usersArray);
+      msg: 'Error al obtener los usuarios!' });
   }
 };
 
@@ -85,7 +83,6 @@ const getUserById = async (req, res) => {
       res.status(200).json(user);
     }
   } catch (error) {
-    console.log(error);
     res.status(500).json({ ok: false, msg: 'Error al obtener el usuario' });
   }
 };
@@ -105,10 +102,7 @@ const createUser = async (req, res) => {
       })
 
   }catch(error){
-    return res.status(500).json({ 
-          ok: false,
-          msg: "Hubo un error al crear el usuario"
-         });
+    return res.status(500).json({ok: false, msg: "Hubo un error al crear el usuario"});
   }
   try{
     await models.carts.create({
@@ -120,10 +114,7 @@ const createUser = async (req, res) => {
 
 
   }catch(error){
-    return res.status(500).json({ 
-      ok: false,
-      msg: "Hubo un error al crear el carrito del usuario"
-    });
+    return res.status(500).json({ ok: false, msg: "Hubo un error al crear el carrito del usuario"});
   }
 }
 
@@ -211,9 +202,7 @@ const deleteUserById = async (req, res) => {
       }
     }
   } catch (error) {
-    console.log(error);
-
-    res.status(500).json({ ok: false, msg: 'Error al eliminar el usuario' });
+      res.status(500).json({ ok: false, msg: 'Error al eliminar el usuario' });
   }
 };
 
@@ -251,11 +240,7 @@ const login = async (req, res)=>{
 
   }
   catch(error){
-      console.log(error)
-      res.status(500).json({
-          ok:false,
-          mgs: 'Error in login'
-      })
+      res.status(500).json({ ok:false, mgs: 'Error in login'})
 
   }
 }
