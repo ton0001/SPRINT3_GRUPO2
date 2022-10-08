@@ -62,10 +62,7 @@ const productController = {
         res.status(200).json(oneProduct);
       }
     } catch (error) {
-      res.status(500).json({
-        ok: false,
-        msg: "Error del servidor "
-      });
+      res.status(500).json({ ok: false, msg: "Error del servidor "});
     }
   },
 
@@ -89,10 +86,7 @@ const productController = {
         producto
       });
     } catch (error) {
-      res.status(500).json({
-        ok: false,
-        msg: "Error del servidor al crear el producto",
-      });
+      res.status(500).json({ok: false, msg: "Error del servidor al crear el producto",});
     }
   },
 
@@ -129,10 +123,7 @@ const productController = {
         });
       }
     } catch (error) {
-     res.status(500).json({
-      ok: false, 
-      msg: "Error del servidor",
-     })
+     res.status(500).json({ok: false, msg: "Error del servidor",})
     }
   },
 
@@ -149,11 +140,8 @@ const productController = {
       res.status(200).json(mostwanted)
 
     } catch (err) {
-      console.log(err);
-      res.status(500).json({
-        ok: false,
-        msg: "Error inesperado",
-      });
+
+      res.status(500).json({ok: false, msg: "Error inesperado",});
     }
   },
 
@@ -268,7 +256,6 @@ const productController = {
         res.status(200).json(filteredProducto)
        }
     } catch (error) {
-      console.log(error)
       res.status(500).json({ ok: false, msg: "Error al obtener los productos" });
     }
   },
@@ -303,7 +290,6 @@ const productController = {
         
       
     } catch (error) {
-      console.log(error);
       res.status(500).json({ok: false, msg: "Error del servidor al eliminar el producto"});
     }
   },

@@ -10,7 +10,7 @@ const {
 } = require("../controllers/picturesController");
 const handleErrors = require("../middlewares/handleErros");
 const verifyJWT = require("../middlewares/verifyJWT");
-const isAuthenticated = require("../middlewares/verifyRoles");
+const {isAuthenticated} = require("../middlewares/verifyRoles");
 
 //router.get('/:id', verifyJWT, getPictureById);
 //router.get('/', verifyJWT, getPictureByProductId)

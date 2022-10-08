@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90.16% </span>
+                <span class="strong">93.22% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>55/61</span>
+                <span class='fraction'>55/59</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.33% </span>
+                <span class="strong">91.66% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>10/12</span>
+                <span class='fraction'>11/12</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90.16% </span>
+                <span class="strong">93.22% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>55/61</span>
+                <span class='fraction'>55/59</span>
             </div>
         
             
@@ -311,16 +311,7 @@
 <a name='L246'></a><a href='#L246'>246</a>
 <a name='L247'></a><a href='#L247'>247</a>
 <a name='L248'></a><a href='#L248'>248</a>
-<a name='L249'></a><a href='#L249'>249</a>
-<a name='L250'></a><a href='#L250'>250</a>
-<a name='L251'></a><a href='#L251'>251</a>
-<a name='L252'></a><a href='#L252'>252</a>
-<a name='L253'></a><a href='#L253'>253</a>
-<a name='L254'></a><a href='#L254'>254</a>
-<a name='L255'></a><a href='#L255'>255</a>
-<a name='L256'></a><a href='#L256'>256</a>
-<a name='L257'></a><a href='#L257'>257</a>
-<a name='L258'></a><a href='#L258'>258</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L249'></a><a href='#L249'>249</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
@@ -422,18 +413,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -531,16 +513,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -662,7 +644,7 @@ const getUserById = async (req, res) =&gt; {
       res.status(200).json(user);
     }
   } catch (error) {
-<span class="cstat-no" title="statement not covered" >    res.status(500).json({ ok: false, msg: 'Error al obtener el usuario' });</span>
+<span class="cstat-no" title="statement not covered" >    res.status(500).json({ ok: false, msg: 'Error al obtener el usuarioP' });</span>
   }
 };
 &nbsp;
@@ -675,25 +657,16 @@ const createUser = async (req, res) =&gt; {
   try{
       user =  await models.users.create(req.body)
       userCreated = await models.users.findOne({
-        where: {username: req.body.username},
-        attributes: {exclude: ['user_id', 'password'] 
-      }
-      })
+          where: {username: req.body.username},
+          attributes: {exclude: ['user_id', 'password'] }
+        })
+&nbsp;
+      await models.carts.create({ user_id : user.id })
+  
+      res.status(200).json( userCreated.dataValues );
 &nbsp;
   }catch(error){
-<span class="cstat-no" title="statement not covered" >    return res.status(500).json({ok: false, msg: "Hubo un error al crear el usuario"});</span>
-  }
-  try{
-    await models.carts.create({
-      user_id : user.id })
-&nbsp;
-      res.status(200).json(
-        userCreated.dataValues
-      );
-&nbsp;
-&nbsp;
-  }catch(error){
-<span class="cstat-no" title="statement not covered" >    return res.status(500).json({ ok: false, msg: "Hubo un error al crear el carrito del usuario"});</span>
+<span class="cstat-no" title="statement not covered" >    return res.status(500).json({ ok: false, msg: "Hubo un error al crear el  usuario"});</span>
   }
 }
 &nbsp;
@@ -796,8 +769,8 @@ const login = async (req, res)=&gt;{
       }) 
       // console.log(user_exist);
 &nbsp;
-      <span class="missing-if-branch" title="if path not taken" >I</span>if (!user_exist){
-<span class="cstat-no" title="statement not covered" >        return res.status(400).json({</span>
+      if (!user_exist){
+        return res.status(400).json({
           ok: false,
           msg: 'Wrong password or username'
         })
@@ -841,7 +814,7 @@ module.exports = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-10-07T00:46:23.006Z
+                at 2022-10-08T01:45:25.537Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

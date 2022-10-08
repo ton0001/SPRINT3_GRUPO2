@@ -16,7 +16,7 @@ const {
 const cartsController = require('../controllers/cartsController');
 
 const verifyJWT = require('../middlewares/verifyJWT');
-const isAuthenticated = require('../middlewares/verifyRoles');
+const {isAuthenticated} = require('../middlewares/verifyRoles');
 const handleErrors = require("../middlewares/handleErros");
 
 

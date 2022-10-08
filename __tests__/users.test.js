@@ -35,9 +35,26 @@ describe("POST /api/v3/users/login", () => {
     const { statusCode, body } = await request(app)
       .post("/api/v3/users/login")
       .send();
-
     expect(statusCode).toBe(400);
   });
+
+  test("Debe devolver un estado 404 si el usuario o la contraseña son incorrectos", async () => {
+    const data = {
+        username: "siacobo00",
+        password: "1234567",
+      };
+    const { statusCode, body } = await request(app)
+      .post("/api/v3/users/login")
+      .send(data);
+    expect(statusCode).toBe(400);
+    expect(body).toEqual(
+        expect.objectContaining({
+          msg: expect.any(String),
+          ok: false,
+        })
+      );
+  });
+
 });
 
 describe("DELETE /api/v3/users/:id", () => {

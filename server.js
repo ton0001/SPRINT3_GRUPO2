@@ -50,7 +50,7 @@ app.use("/api/v3/carts", cartRoutes);
 app.use("/api/v3/users", usersRoutes);
 
 const server = app.listen(PORT, () => {
-  console.log(`server corriendo en ${PORT}`);
+  // console.log(`server corriendo en ${PORT}`);
   sequelize.sync({ alter: true });
 });
 

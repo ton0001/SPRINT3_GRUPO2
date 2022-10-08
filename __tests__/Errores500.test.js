@@ -2,32 +2,13 @@
  const { server, app} = require("../server.js")
 
 const request = require('supertest');
-const sinon = require('sinon');
 const { generateJWT } = require("../helpers/generateJWT.js");
 
-const initModels = require("../database/models/init-models.js");
 const { sequelize } = require("../database/models");
+
 const {verifyJWT }= require("../api/middlewares/verifyJWT");
-const isAuthenticated = require("../api/middlewares/verifyRoles.js");
-
-
-beforeEach(function() {
-
-    server.close();
-    
-    jest.mock('../api/middlewares/verifyJWT'), () => jest.fn((req, res, next) => {
-        console.log("pasa por el fuccking mock")
-     next()
-    })
-    // console.log(isAuthenticated)
-    // jest.mock('../api/middlewares/verifyRoles'), () => jest.fn((req, res, next) => {
-    //     console.log("pasa por el fuccking mock")
-    //  next()
-    // })
-
-
-})
-
+const {isAuthenticated}= require ("../api/middlewares/verifyRoles");
+const sinon = require("sinon");
 
 
 const god_user = {
@@ -35,9 +16,48 @@ const god_user = {
     username: "siacobo0",
 }
 
+afterEach(() => {
+    server.close();
+  });
+
+beforeEach(function() {
+    server.close()
+    jest.mock('../api/middlewares/verifyJWT'), () => jest.fn((req, res, next) => {
+         next()
+        })
+})
+
+describe("ERROR 500 en middlewares",  () => {
+
+    test("Error del servidor al verificar roles de usuario", async () => {
+       
+       
+        const token = await generateJWT(god_user);
+
+        try {
+            await sequelize.authenticate();
+            // console.log('Connection has been established successfully.');
+          } catch (error) {
+            // console.log('Unable to connect to the database:', error);
+          }
+        try {
+            await sequelize.close();
+            // console.log('Connection has been closed  successfully.');
+          } catch (error) {
+            // console.error('Unable to connect to disconnect the database:', error);
+          }
+    
+       const {statusCode, body} = await request(app).get('/api/v3/users/1').auth(token, {type: 'bearer'});
+    //    console.log(statusCode, body)
+       expect(statusCode).toBe(500);
+
+    })
+
+})
 
 
 describe('ERRORES 500 DEL login', () => {
+
     test('error al hacer login', async () => {
 
         const user = {
@@ -48,22 +68,21 @@ describe('ERRORES 500 DEL login', () => {
 
         try {
             await sequelize.authenticate();
-            console.log('Connection has been established successfully.');
+            // console.log('Connection has been established successfully.');
           } catch (error) {
-            console.log('Unable to connect to the database:', error);
+            // console.log('Unable to connect to the database:', error);
           }
         try {
             await sequelize.close();
-            console.log('Connection has been closed  successfully.');
+            // console.log('Connection has been closed  successfully.');
           } catch (error) {
-            console.error('Unable to connect to disconnect the database:', error);
+            // console.error('Unable to connect to disconnect the database:', error);
           }
     
        const {statusCode, body} = await request(app).post('/api/v3/users/login').send(user);
-       console.log(statusCode, body)
+    //    console.log(statusCode, body)
        expect(statusCode).toBe(500);
     })
-   
    
 })
 
@@ -76,19 +95,19 @@ describe('ERRORES 500 DEL USER', () => {
 
         try {
             await sequelize.authenticate();
-            console.log('Connection has been established successfully.');
+            // console.log('Connection has been established successfully.');
           } catch (error) {
             console.log('Unable to connect to the database:', error);
           }
         try {
             await sequelize.close();
-            console.log('Connection has been closed  successfully.');
+            // console.log('Connection has been closed  successfully.');
           } catch (error) {
-            console.error('Unable to connect to disconnect the database:', error);
+            // console.error('Unable to connect to disconnect the database:', error);
           }
 
        const {statusCode, body} = await request(app).get('/api/v3/users').auth(token, {type: 'bearer'});
-       console.log(statusCode, body)
+    //    console.log(statusCode, body)
        expect(statusCode).toBe(500);
       
        
@@ -96,24 +115,25 @@ describe('ERRORES 500 DEL USER', () => {
     )
     
     // test('GET/usersbyId debe devolver status 500 con error del servidor', async () => {
-       
+        
+        
     //     const token = await generateJWT(god_user);
     //     const id = 1
 
     //     try {
     //         await sequelize.authenticate();
-    //         console.log('Connection has been established successfully.');
+    //         // console.log('Connection has been established successfully.');
     //       } catch (error) {
-    //         console.log('Unable to connect to the database:', error);
+    //         // console.log('Unable to connect to the database:', error);
     //       }
     //     try {
     //         await sequelize.close();
-    //         console.log('Connection has been closed  successfully.');
+    //         // console.log('Connection has been closed  successfully.');
     //       } catch (error) {
-    //         console.error('Unable to connect to disconnect the database:', error);
+    //         // console.error('Unable to connect to disconnect the database:', error);
     //       }
 
-    //    const {statusCode, body} = await request(app).get('/api/v3/users' + id).auth(token, {type: 'bearer'});
+    //    const {statusCode, body} = await request(app).get('/api/v3/users/' + id).auth(token, {type: 'bearer'});
     //    console.log(statusCode, body)
     //    expect(statusCode).toBe(500);
       
@@ -122,7 +142,6 @@ describe('ERRORES 500 DEL USER', () => {
     // )
 
 })
-
 
 describe('ERRORES 500 DEL PRODUCTS', () => {
 
@@ -133,19 +152,19 @@ describe('ERRORES 500 DEL PRODUCTS', () => {
 
         try {
             await sequelize.authenticate();
-            console.log('Connection has been established successfully.');
+            // console.log('Connection has been established successfully.');
         } catch (error) {
-            console.log('Unable to connect to the database:', error);
+            // console.log('Unable to connect to the database:', error);
         }
         try {
             await sequelize.close();
-            console.log('Connection has been closed  successfully.');
+            // console.log('Connection has been closed  successfully.');
         } catch (error) {
-            console.error('Unable to connect to disconnect the database:', error);
+            // console.error('Unable to connect to disconnect the database:', error);
         }
 
     const {statusCode, body} = await request(app).get('/api/v3/products').auth(token, {type: 'bearer'});
-    console.log(statusCode, body)
+    // console.log(statusCode, body)
     expect(statusCode).toBe(500);
     
     
@@ -158,19 +177,19 @@ describe('ERRORES 500 DEL PRODUCTS', () => {
 
         try {
             await sequelize.authenticate();
-            console.log('Connection has been established successfully.');
+            // console.log('Connection has been established successfully.');
         } catch (error) {
-            console.log('Unable to connect to the database:', error);
+            // console.log('Unable to connect to the database:', error);
         }
         try {
             await sequelize.close();
-            console.log('Connection has been closed  successfully.');
+            // console.log('Connection has been closed  successfully.');
         } catch (error) {
-            console.error('Unable to connect to disconnect the database:', error);
+            // console.error('Unable to connect to disconnect the database:', error);
         }
 
     const {statusCode, body} = await request(app).get("/api/v3/products/mostwanted").auth(token, {type: 'bearer'});
-    console.log(statusCode, body)
+    // console.log(statusCode, body)
     expect(statusCode).toBe(500);
     
     
@@ -184,19 +203,19 @@ describe('ERRORES 500 DEL PRODUCTS', () => {
 
         try {
             await sequelize.authenticate();
-            console.log('Connection has been established successfully.');
+            // console.log('Connection has been established successfully.');
         } catch (error) {
-            console.log('Unable to connect to the database:', error);
+            // console.log('Unable to connect to the database:', error);
         }
         try {
             await sequelize.close();
-            console.log('Connection has been closed  successfully.');
+            // console.log('Connection has been closed  successfully.');
         } catch (error) {
-            console.error('Unable to connect to disconnect the database:', error);
+            // console.error('Unable to connect to disconnect the database:', error);
         }
 
     const {statusCode, body} = await request(app).get("/api/v3/products?category=" + id).auth(token, {type: 'bearer'});
-    console.log(statusCode, body)
+    // console.log(statusCode, body)
     expect(statusCode).toBe(500);
     
     
@@ -210,28 +229,50 @@ describe('ERRORES 500 DEL PRODUCTS', () => {
 
         try {
             await sequelize.authenticate();
-            console.log('Connection has been established successfully.');
+            // console.log('Connection has been established successfully.');
         } catch (error) {
-            console.log('Unable to connect to the database:', error);
+            // console.log('Unable to connect to the database:', error);
         }
         try {
             await sequelize.close();
-            console.log('Connection has been closed  successfully.');
+            // console.log('Connection has been closed  successfully.');
         } catch (error) {
-            console.error('Unable to connect to disconnect the database:', error);
+            // console.error('Unable to connect to disconnect the database:', error);
         }
 
     const {statusCode, body} = await request(app) .get("/api/v3/products/search?q=" + keyword).auth(token, {type: 'bearer'});
-    console.log(statusCode, body)
+    // console.log(statusCode, body)
     expect(statusCode).toBe(500);
     
     
     })
 
+    test('GET products by ID devolver status 500 con error del servidor', 
+    async () => {
+        const ID=3
+        const token = await generateJWT(god_user);
+
+        try {
+            await sequelize.authenticate();
+            // console.log('Connection has been established successfully.');
+        } catch (error) {
+            // console.log('Unable to connect to the database:', error);
+        }
+        try {
+            await sequelize.close();
+            // console.log('Connection has been closed  successfully.');
+        } catch (error) {
+            // console.error('Unable to connect to disconnect the database:', error);
+        }
+
+    const {statusCode, body} = await request(app).get('/api/v3/products/' + ID).auth(token, {type: 'bearer'});
+    // console.log(statusCode, body)
+    expect(statusCode).toBe(500); 
+    })
+
     
     
 })
-
 
 
 describe('ERRORES 500 DEL PICTURES', () => {
@@ -243,19 +284,19 @@ describe('ERRORES 500 DEL PICTURES', () => {
 
         try {
             await sequelize.authenticate();
-            console.log('Connection has been established successfully.');
+            // console.log('Connection has been established successfully.');
         } catch (error) {
-            console.log('Unable to connect to the database:', error);
+            // console.log('Unable to connect to the database:', error);
         }
         try {
             await sequelize.close();
-            console.log('Connection has been closed  successfully.');
+            // console.log('Connection has been closed  successfully.');
         } catch (error) {
-            console.error('Unable to connect to disconnect the database:', error);
+            // console.error('Unable to connect to disconnect the database:', error);
         }
 
     const {statusCode, body} = await request(app).get('/api/v3/pictures').auth(token, {type: 'bearer'});
-    console.log(statusCode, body)
+    // console.log(statusCode, body)
     expect(statusCode).toBe(500);
     
     
@@ -270,22 +311,46 @@ describe('ERRORES 500 DEL PICTURES', () => {
 
         try {
             await sequelize.authenticate();
-            console.log('Connection has been established successfully.');
+            // console.log('Connection has been established successfully.');
         } catch (error) {
-            console.log('Unable to connect to the database:', error);
+            // console.log('Unable to connect to the database:', error);
         }
         try {
             await sequelize.close();
-            console.log('Connection has been closed  successfully.');
+            // console.log('Connection has been closed  successfully.');
         } catch (error) {
-            console.error('Unable to connect to disconnect the database:', error);
+            // console.error('Unable to connect to disconnect the database:', error);
         }
 
     const {statusCode, body} = await request(app).get('/api/v3/pictures/' + id).auth(token, {type: 'bearer'});
-    console.log(statusCode, body)
+    // console.log(statusCode, body)
+    expect(statusCode).toBe(500);
+    }) 
+
+    test('GET pictures by product ID devolve status 500 con error del servidor', 
+    async () => {
+        const ID=3
+        const token = await generateJWT(god_user);
+
+        try {
+            await sequelize.authenticate();
+            // console.log('Connection has been established successfully.');
+        } catch (error) {
+            // console.log('Unable to connect to the database:', error);
+        }
+        try {
+            await sequelize.close();
+            // console.log('Connection has been closed  successfully.');
+        } catch (error) {
+            // console.error('Unable to connect to disconnect the database:', error);
+        }
+
+    const {statusCode, body} = await request(app).get('/api/v3/pictures?product=' + ID).auth(token, {type: 'bearer'});
+    // console.log(statusCode, body)
     expect(statusCode).toBe(500);
     
     
     })
+
 })
 

@@ -30,6 +30,7 @@ describe("GET /carts/:id", () => {
       })
     );
   });
+
   test("El id agregado no matchea con el carrito de dicho usuario", async () => {
     const idByParam = 9;
     const guestId = {
@@ -51,6 +52,30 @@ describe("GET /carts/:id", () => {
       })
     );
   });
+
+  test("No existe id de usuario", async () => {
+    const idByParam = 300;
+    const god_user = {
+      id: 1,
+      username: "siacobo0",
+    };
+
+    const token = await generateJWT(god_user);
+
+    const { body, statusCode } = await request(app)
+      .get(`/api/v3/carts/${idByParam}`)
+      .auth(token, { type: "bearer" });
+
+      expect(statusCode).toBe(400);
+      expect(body).toEqual(
+        expect.objectContaining({
+          ok: false,
+          message: expect.any(String),
+        })
+      );
+  })
+
+
 });
 
 // -------  //
@@ -79,7 +104,6 @@ describe("PUT /  carts/:id", () => {
       .auth(token, { type: "bearer" }).send(cart)
 
       
-    
    expect(statusCode).toBe(200);
     expect(body).toEqual(
       expect.arrayContaining([ 
@@ -116,5 +140,33 @@ describe("PUT /  carts/:id", () => {
       }))
     
   });
+
+  test("No existe id de usuario", async () => {
+    const idByParam = 300;
+    const god_user = {
+      id: 1,
+      username: "siacobo0",
+    };
+
+    const cart = [{
+      "product_id": 77,
+      "quantity": 2
+    }, { "product_id": 12,
+    "quantity": 2}]
+
+    const token = await generateJWT(god_user);
+
+    const { body, statusCode } = await request(app)
+    .put(`/api/v3/carts/${idByParam}`)
+      .auth(token, { type: "bearer" }).send(cart)
+
+      expect(statusCode).toBe(404);
+      expect(body).toEqual(
+        expect.objectContaining({
+          ok: false,
+          message: expect.any(String),
+        })
+      );
+  })
 
 });

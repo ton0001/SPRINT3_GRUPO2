@@ -288,8 +288,8 @@ describe("DELETE /pictures/:id", (req, res) => {
   });
 });
 
-//test de ruta PUT /api/v3/pictures/:id
 describe("PUT /api/v3/pictures/:id", () => {
+
   test("Debe devolver un estado 200 si la imagen fue actualizada correctamente", async () => {
     let idPicture = 22;
     //datos para actualizar una imagen
@@ -368,6 +368,41 @@ describe("PUT /api/v3/pictures/:id", () => {
     );
   });
 
+
+  test("Debe devolver un estado 400 si id de la imagen no existe", async () => {
+    let idPicture =500;
+    //datos para actualizar una imagen
+    const randomString = Math.random().toString(36).substr(2, 7);
+
+    const data = {
+      url: randomString,
+      description: randomString,
+      product_id: 23,
+    };
+    //creacion del token
+    const god_user = {
+      id: 1,
+      username: "siacobo0",
+    };
+    const token = await generateJWT(god_user);
+
+    //envio de los datos
+    const { statusCode, body } = await request(app)
+      .put(`/api/v3/pictures/${idPicture}`)
+      .auth(token, { type: "bearer" })
+      .send(data);
+
+      // comprobar codig  o de status
+    expect(statusCode).toBe(400);
+
+    expect(body).toEqual(
+      expect.objectContaining({
+        msg: expect.any(String),
+        ok: false,
+      })
+    );
+  });
+
   //Debe devolver un estado 401 si el usuario no esta logueado
   test("Debe devolver un estado 401 si el usuario no esta logueado", async () => {
     let idPicture = 22;
@@ -394,4 +429,60 @@ describe("PUT /api/v3/pictures/:id", () => {
       })
     );
   });
+
+
+  
 });
+
+describe("GET /api/v3/pictures?product=id", () => {
+
+  //prueba en la que se espera que devuelva algo siempre, el id 1 siempre deberia existir
+  test("Debe devolver un json de pictures y status 200 para el id del producto y siendo usuario GOD", async () => {
+    const ID = 3;
+    const token = await generateJWT({ role: "GOD" });
+    const { body, statusCode } = await request(app)
+      .get("/api/v3/pictures?product=" + ID)
+      .auth(token, { type: "bearer" });
+
+    expect(body).toEqual(
+      expect.objectContaining({
+        ok: true,
+        resp: expect.any(Object),
+      })
+    );
+    expect(statusCode).toBe(200);
+  });
+
+  test("Debe devolver un error 404 del producto no encontrado", async () => {
+    const ID = 300;
+    const token = await generateJWT({ role: "ADMIN" });
+    const { body, statusCode } = await request(app)
+      .get(`/api/v3/pictures?product=` + ID)
+      .auth(token, { type: "bearer" });
+
+    expect(body).toEqual(
+      expect.objectContaining({
+        ok: false,
+        message: expect.any(String),
+      })
+    );
+    expect(statusCode).toBe(404);
+  });
+
+  test("Pedir imagenes del producto sin lograrse primero", async () => {
+    const ID = 3;
+    const { statusCode, body } = await request(app).get(
+      "/api/v3/pictures?product=" + ID );
+    // console.log(statusCode, body);
+    expect(statusCode).toBe(401);
+    expect(body).toEqual(
+      expect.objectContaining({
+        msg: expect.any(String),
+        ok: false,
+      })
+    );
+  });
+
+
+});
+

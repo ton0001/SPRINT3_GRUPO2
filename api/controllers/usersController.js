@@ -83,7 +83,7 @@ const getUserById = async (req, res) => {
       res.status(200).json(user);
     }
   } catch (error) {
-    res.status(500).json({ ok: false, msg: 'Error al obtener el usuario' });
+    res.status(500).json({ ok: false, msg: 'Error al obtener el usuarioP' });
   }
 };
 
@@ -96,25 +96,16 @@ const createUser = async (req, res) => {
   try{
       user =  await models.users.create(req.body)
       userCreated = await models.users.findOne({
-        where: {username: req.body.username},
-        attributes: {exclude: ['user_id', 'password'] 
-      }
-      })
+          where: {username: req.body.username},
+          attributes: {exclude: ['user_id', 'password'] }
+        })
+
+      await models.carts.create({ user_id : user.id })
+  
+      res.status(200).json( userCreated.dataValues );
 
   }catch(error){
-    return res.status(500).json({ok: false, msg: "Hubo un error al crear el usuario"});
-  }
-  try{
-    await models.carts.create({
-      user_id : user.id })
-
-      res.status(200).json(
-        userCreated.dataValues
-      );
-
-
-  }catch(error){
-    return res.status(500).json({ ok: false, msg: "Hubo un error al crear el carrito del usuario"});
+    return res.status(500).json({ ok: false, msg: "Hubo un error al crear el  usuario"});
   }
 }
 

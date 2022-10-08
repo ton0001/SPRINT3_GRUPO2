@@ -4,7 +4,7 @@ const { check } = require("express-validator");
 const productController = require("../controllers/productsController");
 const handleErrors = require("../middlewares/handleErros");
 const verifyJWT = require("../middlewares/verifyJWT");
-const isAuthenticated = require("../middlewares/verifyRoles");
+const {isAuthenticated} = require("../middlewares/verifyRoles");
 
 // router.get('/', verifyJWT, productController.listCategory)
 // router.get('/', productController.allProduct)

@@ -82,7 +82,6 @@ const controllerCart = {
         productDB = await models.products.findByPk(product.product_id);
 
         if(productDB.dataValues.stock < product.quantity) {
-          console.log('entro')
           noStock = true;
         }
       }

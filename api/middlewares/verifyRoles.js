@@ -61,15 +61,13 @@ const isAuthenticated = (roles) => async (req, res, next) => {
     }else{
             return res.status(result.status).json({ok: false, msg: result.message});
             }
-
     }
-
 
 const verifyUser = (req)=>{
-    if (Number(req.params.id) === Number(req.tokenID)) {
-        return true
-    }
-    else return false
+        if (Number(req.params.id) === Number(req.tokenID)) {
+            return true
+        }
+        else return false
 }
 
 const getRole = async (req, res) => {
@@ -96,9 +94,11 @@ const getRole = async (req, res) => {
         //   console.log(result);
         //   console.log(req.tokenID);
     }catch (err) {
-        result = {status: 500, ok : false, message: "Error de servidor1"}
+        result = {status: 500, ok : false, message: "Error de servidor12"}
     }
     return result
 };
 
-module.exports = isAuthenticated;
+    
+
+module.exports = {isAuthenticated};

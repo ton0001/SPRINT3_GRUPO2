@@ -60,12 +60,12 @@ const createPic = async (req, res) => {
     const bodyProductId = req.body.product_id;
 
     //si no llegan los datos requeridos lanza una respuesta de error
-    if(!bodyUrl || !bodyProductId){
-        return res.status(400).json({
-            ok: false,
-            message: 'faltan campos requeridos'
-        })
-    }
+    // if(!bodyUrl || !bodyProductId){
+    //     return res.status(400).json({
+    //         ok: false,
+    //         message: 'faltan campos requeridos'
+    //     })
+    // }
 
 
     await models.pictures.create({
@@ -80,7 +80,6 @@ const createPic = async (req, res) => {
     });
 
   } catch (error) {
-    console.log(error);
     res.status(500).json({ok: false, message: "server error"});
   }
 };
