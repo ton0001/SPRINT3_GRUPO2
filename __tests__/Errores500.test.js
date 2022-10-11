@@ -6,9 +6,9 @@ const { generateJWT } = require("../helpers/generateJWT.js");
 
 const { sequelize } = require("../database/models");
 
-const {verifyJWT }= require("../api/middlewares/verifyJWT");
-const {isAuthenticated}= require ("../api/middlewares/verifyRoles");
-const sinon = require("sinon");
+// const {verifyJWT }= require("../api/middlewares/verifyJWT");
+// const verifyRoles= require ("../api/middlewares/verifyRoles");
+// const sinon = require("sinon");
 
 
 const god_user = {
@@ -113,33 +113,6 @@ describe('ERRORES 500 DEL USER', () => {
        
     }
     )
-    
-    // test('GET/usersbyId debe devolver status 500 con error del servidor', async () => {
-        
-        
-    //     const token = await generateJWT(god_user);
-    //     const id = 1
-
-    //     try {
-    //         await sequelize.authenticate();
-    //         // console.log('Connection has been established successfully.');
-    //       } catch (error) {
-    //         // console.log('Unable to connect to the database:', error);
-    //       }
-    //     try {
-    //         await sequelize.close();
-    //         // console.log('Connection has been closed  successfully.');
-    //       } catch (error) {
-    //         // console.error('Unable to connect to disconnect the database:', error);
-    //       }
-
-    //    const {statusCode, body} = await request(app).get('/api/v3/users/' + id).auth(token, {type: 'bearer'});
-    //    console.log(statusCode, body)
-    //    expect(statusCode).toBe(500);
-      
-       
-    // }
-    // )
 
 })
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1665193525584" clover="3.2.0">
-  <project timestamp="1665193525584" name="All files">
+<coverage generated="1665494004290" clover="3.2.0">
+  <project timestamp="1665494004290" name="All files">
     <metrics statements="452" coveredstatements="435" conditionals="89" coveredconditionals="80" methods="47" coveredmethods="47" elements="588" coveredelements="562" complexity="0" loc="452" ncloc="452" packages="7" files="24" classes="24"/>
     <package name="SPRINT3_GRUPO2">
       <metrics statements="34" coveredstatements="34" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
